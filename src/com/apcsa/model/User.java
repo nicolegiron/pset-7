@@ -10,6 +10,7 @@ public class User {
     private String username;
     private String password;
     private String lastLogin;
+    private int courseId;
 
     /**
      * Creates an instance of the User class.
@@ -36,7 +37,7 @@ public class User {
      * @param lastLogin the last time the user logged in
      */
 
-    public User(int userId, String accountType, String username, String password, String lastLogin) {
+    public User (int userId, String accountType, String username, String password, String lastLogin) {
         this.userId = userId;
         this.accountType = accountType.toLowerCase();
         this.username = username;
@@ -44,7 +45,7 @@ public class User {
         this.lastLogin = lastLogin;
     }
 
-    /**
+	/**
      * @return userId
      */
 

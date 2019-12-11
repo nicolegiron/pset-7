@@ -50,9 +50,26 @@ public class Application {
                     ? activeUser : null;
 
                 if (isFirstLogin() && !activeUser.isRoot()) {
-                    // first-time users need to change their passwords from the default provided
+                    System.out.print("Input a new password: ");
+                    String newPassword = in.next();
+                    
+                    changePass(username, newPassword);
+                	// first-time users need to change their passwords from the default provided
                 }
-
+                
+                System.out.println("\nHello, again, " + activeUser.getUsername() + "!\n");
+                
+                boolean validLogin = true;
+                while(validLogin) {
+        			switch (studentSelection()) {
+        			case 1: courseGrades(); break;
+//        			case 2: assignment(); break;
+//        			case 3: changePassword(); break;
+//        			case 4: logout(); break;
+        			default: System.out.println("\nInvalid selection. \n"); break;
+        			}
+        		}
+                
                 // create and show the user interface
                 //
                 // remember, the interface will be difference depending on the type
@@ -62,7 +79,15 @@ public class Application {
             }
         }
     }
-
+    public void courseGrades() {
+    	int courseId = PowerSchool.getCourseId(activeUser);
+    	System.out.println(courseId);
+    }
+    
+    public void changePass(String username, String newPassword) {
+    	PowerSchool.updatePassword(username, newPassword);
+    	System.out.println("Successfully changed password.");
+    }
     /**
      * Logs in with the provided credentials.
      *
@@ -86,6 +111,16 @@ public class Application {
     public boolean isFirstLogin() {
         return activeUser.getLastLogin().equals("0000-00-00 00:00:00.000");
     }
+    
+    public int studentSelection() {
+    	System.out.println("[1] View course grades.");
+    	System.out.println("[2] View assignment grades by course.");
+    	System.out.println("[3] Change password.");
+    	System.out.println("[4] Logout.");
+    	int selection = in.nextInt();
+		return selection;
+    }
+    
 
     /////// MAIN METHOD ///////////////////////////////////////////////////////////////////
 

@@ -83,14 +83,12 @@ public class PowerSchool {
                     if (affected != 1) {
                         System.err.println("Unable to update last login (affected rows: " + affected + ").");
                     }
-
                     return new User(rs);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -198,7 +196,6 @@ public class PowerSchool {
 
             if (stmt.executeUpdate() == 1) {
                 conn.commit();
-
                 return 1;
             } else {
                 conn.rollback();
@@ -249,4 +246,45 @@ public class PowerSchool {
             e.printStackTrace();
         }
     }
+    
+    public static int updatePassword(String username, String newPassword) {
+        try (Connection conn = getConnection();
+        	PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_STUDENT_PASSWORD)) {
+
+            conn.setAutoCommit(false);
+            stmt.setString(1, Utils.getHash(newPassword));
+            stmt.setString(2, username);
+
+            if (stmt.executeUpdate() == 1) {
+                conn.commit();
+                return 1;
+            } else {
+                conn.rollback();
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return -1;
+        }
+    }
+    
+    public static int getCourseId(User activeUser) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID)) {
+    			
+               stmt.setInt(1, activeUser.getUserId());
+
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                       return rs.getInt("course_id");
+                   }
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+    	return -1;
+    }
+    
 }

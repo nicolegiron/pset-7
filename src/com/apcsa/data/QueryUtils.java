@@ -54,4 +54,13 @@ public class QueryUtils {
     public static final String GET_STUDENT_SQL =
         "SELECT * FROM students " +
             "WHERE user_id = ?";
+    
+    public static final String UPDATE_STUDENT_PASSWORD = 
+    		"UPDATE users " +
+    	            "SET auth = ? " +
+    	        "WHERE username = ?";
+    
+    public static final String GET_COURSE_ID =
+    		"SELECT course_id FROM course_grades " +
+    			"WHERE student_id = ?";
 }
