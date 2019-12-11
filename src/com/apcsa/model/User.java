@@ -10,7 +10,6 @@ public class User {
     private String username;
     private String password;
     private String lastLogin;
-    private int courseId;
 
     /**
      * Creates an instance of the User class.

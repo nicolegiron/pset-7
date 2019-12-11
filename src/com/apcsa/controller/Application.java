@@ -1,5 +1,6 @@
 package com.apcsa.controller;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import com.apcsa.data.PowerSchool;
 import com.apcsa.model.User;
@@ -57,13 +58,13 @@ public class Application {
                 	// first-time users need to change their passwords from the default provided
                 }
                 
-                System.out.println("\nHello, again, " + activeUser.getUsername() + "!\n");
+                System.out.println("\nHello, again, " + PowerSchool.getFirstName(activeUser) + "!\n");
                 
                 boolean validLogin = true;
                 while(validLogin) {
         			switch (studentSelection()) {
         			case 1: courseGrades(); break;
-//        			case 2: assignment(); break;
+        			case 2: assignment(); break;
 //        			case 3: changePassword(); break;
 //        			case 4: logout(); break;
         			default: System.out.println("\nInvalid selection. \n"); break;
@@ -79,9 +80,19 @@ public class Application {
             }
         }
     }
+    
+    public void assignment() {
+    	System.out.println("Choose a course.");
+    }
     public void courseGrades() {
-    	int courseId = PowerSchool.getCourseId(activeUser);
-    	System.out.println(courseId);
+    	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
+    	ArrayList<String> courses = PowerSchool.getCourseName(activeUser, courseIds);
+    	ArrayList<String> courseGrades = PowerSchool.getCourseGrade(activeUser, courseIds);
+    	System.out.println("");
+    	for(int i = 0; i <= courses.size()-1; i++) {
+    		System.out.println((i + 1) + ". " + courses.get(i) + " / " + courseGrades.get(i));
+    	}
+    	System.out.println("");
     }
     
     public void changePass(String username, String newPassword) {
