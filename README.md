@@ -1,6 +1,6 @@
 # Problem Set 7
 
-It's time to put your skills to the test. Rather than solving a disjointed set of exercises, this problem set focuses on building a persistent application backed by a real database. Portions of the application are already implemented for you. It's your job to fill in the pieces.
+It's time to put your skills to the test. Rather than solving a disjointed set of exercises, this problem set focuses on building a persistent application backed by a real database. Portions of the application are already implemented for you. It's your job to fill in the pieces. Hopefully you remember those SQL skills you learned last year!
 
 ## Getting Started
 
