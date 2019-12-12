@@ -80,7 +80,8 @@ public class QueryUtils {
     public static final String GET_COURSE_NUMBER = 
     		"SELECT course_no FROM courses " +
     				"WHERE course_id = ?";
-    public static final String GET_ASSIGNMENT_GRADE =
-    		"SELECT ? FROM assignment_grades " +
+    
+    public static final String GET_ASSIGNMENT_TITLE =
+    		"SELECT title FROM assignments " +
     				"WHERE course_id = ?";
 }

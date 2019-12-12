@@ -65,7 +65,7 @@ public class Application {
         			switch (studentSelection()) {
         			case 1: courseGrades(); break;
         			case 2: assignment(); break;
-//        			case 3: changePassword(); break;
+        			case 3: newPassword(); break;
 //        			case 4: logout(); break;
         			default: System.out.println("\nInvalid selection. \n"); break;
         			}
@@ -79,6 +79,11 @@ public class Application {
                 System.out.println("\nInvalid username and/or password.");
             }
         }
+    }
+    
+    public void newPassword() {
+    	System.out.println("Enter current password: ");
+    	System.out.println("Enter new password: ");
     }
     
     public void assignment() {
@@ -99,6 +104,12 @@ public class Application {
     	System.out.println("[5] Midterm exam.");
     	System.out.println("[6] Final exam.");
     	int assignmentSelection = in.nextInt();
+    	ArrayList<String> grades = PowerSchool.getAssignmentTitle(assignmentSelection, courseIds);
+    	System.out.println("");
+    	for(int i = 0; i <= grades.size()-1; i++) {
+    		System.out.println("[" + (i + 1) + "] " + grades.get(i));
+    	}
+    	
     }
     
     public void courseGrades() {
