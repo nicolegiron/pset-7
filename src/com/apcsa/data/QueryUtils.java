@@ -72,7 +72,12 @@ public class QueryUtils {
     		"SELECT grade FROM course_grades " +
     				"WHERE course_id = ?" +
     				"AND student_id = ?";
+    
     public static final String GET_STUDENT_FIRSTNAME =
     		"SELECT first_name FROM students " +
     				"WHERE user_id = ?";
+    
+    public static final String GET_COURSE_NUMBER = 
+    		"SELECT course_no FROM courses " +
+    				"WHERE course_id = ?";
 }

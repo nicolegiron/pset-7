@@ -83,7 +83,17 @@ public class Application {
     
     public void assignment() {
     	System.out.println("Choose a course.");
+    	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
+    	ArrayList<String> courses = PowerSchool.getCourseNumber(activeUser, courseIds);
+    	System.out.println("");
+    	for(int i = 0; i <= courses.size()-1; i++) {
+    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+    	}
+    	int courseSelection = in.nextInt();
+    	
+    	
     }
+    
     public void courseGrades() {
     	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
     	ArrayList<String> courses = PowerSchool.getCourseName(activeUser, courseIds);

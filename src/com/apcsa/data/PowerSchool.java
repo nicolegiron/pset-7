@@ -270,6 +270,24 @@ public class PowerSchool {
         }
     }
     
+    public static String getFirstName(User activeUser) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FIRSTNAME)) {
+
+               stmt.setInt(1, activeUser.getUserId());
+
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                       return rs.getString("first_name");
+                   }
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+           return "yes";
+    }
+    
     public static ArrayList<Integer> getCourseId(User activeUser) {
     	ArrayList<Integer> resultList = new ArrayList<Integer>();
     	try (Connection conn = getConnection();
@@ -337,21 +355,24 @@ public class PowerSchool {
      	return courseGrades;
      }
     
-    public static String getFirstName(User activeUser) {
-    	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_FIRSTNAME)) {
-
-               stmt.setInt(1, activeUser.getUserId());
-
-               try (ResultSet rs = stmt.executeQuery()) {
-                   if (rs.next()) {
-                       return rs.getString("first_name");
-                   }
-               }
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-
-           return "yes";
-    }
+    public static ArrayList<String> getCourseNumber(User activeUser, ArrayList<Integer> courseIds) {
+    	ArrayList<String> courses = new ArrayList<String>();
+     	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_NUMBER)) {
+     			for(int i = 0; i <= courseIds.size()-1; i++) {
+     				stmt.setInt(1, courseIds.get(i));
+     				
+     				try (ResultSet rs = stmt.executeQuery()) {
+     					while (rs.next()) {
+                  		   String result = rs.getString("course_no");
+                  		   courses.add(result);
+     					}
+     				}
+     			}
+     			return courses;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return courses;
+     }
 }
