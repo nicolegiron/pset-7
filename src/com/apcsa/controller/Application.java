@@ -91,7 +91,14 @@ public class Application {
     	}
     	int courseSelection = in.nextInt();
     	
-    	
+    	System.out.println("Choose a marking period or exam status.\n");
+    	System.out.println("[1] MP1 assignment.");
+    	System.out.println("[2] MP2 assignment.");
+    	System.out.println("[3] MP3 assignment.");
+    	System.out.println("[4] MP4 assignment.");
+    	System.out.println("[5] Midterm exam.");
+    	System.out.println("[6] Final exam.");
+    	int assignmentSelection = in.nextInt();
     }
     
     public void courseGrades() {
