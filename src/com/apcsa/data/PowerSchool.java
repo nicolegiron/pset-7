@@ -396,4 +396,23 @@ public class PowerSchool {
         }
      	return title;
      }
+    
+    public static String getPassword(User activeUser, String currentPassword) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_PASSWORD)) {
+
+               stmt.setInt(1, activeUser.getUserId());
+
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                	   return rs.getString("auth");
+                   }
+                   
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+    	return "other";
+    }
 }

@@ -60,6 +60,10 @@ public class QueryUtils {
     	            "SET auth = ? " +
     	        "WHERE username = ?";
     
+    public static final String GET_PASSWORD = 
+    		"SELECT auth FROM users " +
+    				"WHERE user_id = ?";
+    
     public static final String GET_COURSE_ID =
     		"SELECT course_id FROM course_grades " +
     			"WHERE student_id = ?";
@@ -84,4 +88,5 @@ public class QueryUtils {
     public static final String GET_ASSIGNMENT_TITLE =
     		"SELECT title FROM assignments " +
     				"WHERE course_id = ?";
+    
 }

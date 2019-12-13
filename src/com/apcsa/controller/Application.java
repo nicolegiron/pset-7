@@ -5,6 +5,8 @@ import java.util.Scanner;
 import com.apcsa.data.PowerSchool;
 import com.apcsa.model.User;
 
+enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN }
+
 public class Application {
 
     private Scanner in;
@@ -33,7 +35,6 @@ public class Application {
         System.out.println("PowerSchool -- now for students, teachers, and school administrators!");
 
         // continuously prompt for login credentials and attempt to login
-
         while (true) {
             System.out.print("\nUsername: ");
             String username = in.next();
@@ -42,7 +43,7 @@ public class Application {
             String password = in.next();
 
             // if login is successful, update generic user to administrator, teacher, or student
-
+            try {
             if (login(username, password)) {
                 activeUser = activeUser.isAdministrator()
                     ? PowerSchool.getAdministrator(activeUser) : activeUser.isTeacher()
@@ -58,19 +59,9 @@ public class Application {
                 	// first-time users need to change their passwords from the default provided
                 }
                 
-                System.out.println("\nHello, again, " + PowerSchool.getFirstName(activeUser) + "!\n");
-                
-                boolean validLogin = true;
-                while(validLogin) {
-        			switch (studentSelection()) {
-        			case 1: courseGrades(); break;
-        			case 2: assignment(); break;
-        			case 3: newPassword(); break;
-//        			case 4: logout(); break;
-        			default: System.out.println("\nInvalid selection. \n"); break;
-        			}
-        		}
-                
+               
+        		
+                createAndShowUI();
                 // create and show the user interface
                 //
                 // remember, the interface will be difference depending on the type
@@ -78,12 +69,74 @@ public class Application {
             } else {
                 System.out.println("\nInvalid username and/or password.");
             }
+        } catch (Exception e) {
+        	shutdown(e);
+        }
+        }
+    }
+    
+    public void createAndShowUI() {
+    	System.out.println("\nHello, again, " + PowerSchool.getFirstName(activeUser) + "!\n");
+    	
+    	if(activeUser.isRoot()) {
+    		showRootUI();
+    	} else if (activeUser.isStudent()) {
+             while (activeUser != null) {
+     			switch (studentSelection()) {
+     			case 1: courseGrades(); break;
+     			case 2: assignment(); break;
+     			case 3: newPassword(); break;
+//     			case 4: logout(); break;
+     			default: System.out.println("\nInvalid selection. \n"); break;
+     			}
+             }
+    	}
+    }
+    
+    private void showRootUI() {
+    	while (activeUser != null) {
+//    		switch (getRootMenuSelection()) {
+//            case PASSWORD: resetPassword(); break;
+//            case DATABASE: factoryReset(); break;
+//            case LOGOUT: logout(); break;
+//            case SHUTDOWN: shutdown(); break;
+//            default: System.out.println("\nInvalid selection."); break;
+//        	}
+    	}
+    }
+    
+    private RootAction getRootMenuSelection() {
+    	System.out.println();
+    	
+    	System.out.println("[1] Reset user password.");
+        System.out.println("[2] Factory reset database.");
+        System.out.println("[3] Logout.");
+        System.out.println("[4] Shutdown.");
+        System.out.print("\n::: ");
+        
+        switch (Utils.getInt(in, -1)) {
+            case 1: return RootAction.PASSWORD;
+            case 2: return RootAction.DATABASE;
+            case 3: return RootAction.LOGOUT;
+            case 4: return RootAction.SHUTDOWN;
+            default: return null;
         }
     }
     
     public void newPassword() {
-    	System.out.println("Enter current password: ");
+    	in.nextLine();
+    	System.out.println("\nEnter current password: ");
+    	String currentPassword = in.nextLine();
     	System.out.println("Enter new password: ");
+    	String newPassword = in.nextLine();
+    	
+    	String truePassword = PowerSchool.getPassword(activeUser, currentPassword);
+    	
+    	if(!Utils.getHash(currentPassword).equals(truePassword)) {
+    		System.out.println("\nInvalid current password.\n");
+    	}else {
+    		changePass(activeUser.getUsername(), newPassword);
+    	}
     }
     
     public void assignment() {
@@ -125,8 +178,9 @@ public class Application {
     
     public void changePass(String username, String newPassword) {
     	PowerSchool.updatePassword(username, newPassword);
-    	System.out.println("Successfully changed password.");
+    	System.out.println("\nSuccessfully changed password.\n");
     }
+    
     /**
      * Logs in with the provided credentials.
      *
@@ -158,6 +212,41 @@ public class Application {
     	System.out.println("[4] Logout.");
     	int selection = in.nextInt();
 		return selection;
+    }
+    
+    /*
+     * Shuts down the application after encountering an error.
+     * 
+     * @param e the error that initiated the shutdown sequence
+     */
+
+    private void shutdown(Exception e) {
+        if (in != null) {
+            in.close();
+        }
+        
+        System.out.println("Encountered unrecoverable error. Shutting down...\n");
+        System.out.println(e.getMessage());
+                
+        System.out.println("\nGoodbye!");
+        System.exit(0);
+    }
+
+    /*
+     * Releases all resources and kills the application.
+     */
+
+    private void shutdown() {        
+        System.out.println();
+            
+        if (Utils.confirm(in, "Are you sure? (y/n) ")) {
+            if (in != null) {
+                in.close();
+            }
+            
+            System.out.println("\nGoodbye!");
+            System.exit(0);
+        }
     }
     
 

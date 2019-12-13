@@ -7,12 +7,19 @@ import com.apcsa.model.User;
 
 public class Teacher extends User {
 
-	public Teacher(User user, ResultSet rs) throws SQLException {
-		super(rs);
-	}
 	private int teacherId;
     private int departmentId;
     private String firstName;
     private String lastName;
+    
+    public Teacher(User user, ResultSet rs) throws SQLException {
+        super(user);
+        
+        this.teacherId = rs.getInt("teacher_id");
+        this.departmentId = rs.getInt("department_id");
+        this.firstName = rs.getString("first_name");
+        this.lastName = rs.getString("last_name");
+        this.departmentId = rs.getInt("department_id");
+    }
 
 }

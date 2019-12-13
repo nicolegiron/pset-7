@@ -124,4 +124,13 @@ public class User {
     public boolean isStudent() {
         return accountType.equals("student");
     }
+    
+    public User(User user) {
+    	this(user.getUserId(),
+    		 user.getAccountType(),
+    		 user.getUsername(),
+    		 user.getPassword(),
+    		 user.getLastLogin()
+    			);
+    }
 }
