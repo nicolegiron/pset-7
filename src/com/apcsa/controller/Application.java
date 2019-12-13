@@ -270,14 +270,19 @@ public class Application {
 			System.out.print("Point Value: ");
 			pointValue = in.nextInt();
 		}
-    	int assignmentId = 1;
+    	int assignmentId = 0;
     	in.nextLine();
     	System.out.print("Are you sure you want to create this assignment? (y/n)");
     	String yesNo = in.nextLine();
     	if(yesNo.equals("y")) {
-    		System.out.println(PowerSchool.assignmentRows());
-    		//PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
-    		//System.out.println("\nSuccessfully created assignment\n");
+    		int rows = PowerSchool.assignmentRows();
+    		if(rows == 0) {
+    			assignmentId = 1;
+    		} else {
+    			assignmentId = rows + 1;
+    		}
+    		PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
+    		System.out.println("\nSuccessfully created assignment\n");
     	}
     	
     }
