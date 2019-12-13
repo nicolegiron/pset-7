@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-<<<<<<< HEAD
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,10 +12,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.apcsa.model.Student;
-=======
-import java.util.InputMismatchException;
-import java.util.Scanner;
->>>>>>> a162d68ab58ec0748c29f2066d300967bc53b871
+
 
 public class Utils {
 
@@ -44,7 +41,7 @@ public class Utils {
 
         return pwd.toString();
     }
-<<<<<<< HEAD
+
 
 	/**
 	 * Safely reads an integer from the user.
@@ -188,28 +185,7 @@ public class Utils {
      * @return the rounded value
      */
         
-    private static double round(double value, int places) {
-        return new BigDecimal(Double.toString(value))
-            .setScale(places, RoundingMode.HALF_UP)
-            .doubleValue();
-=======
+
     
-    /**
-     * Safely reads an integer from the user.
-     * 
-     * @param in the Scanner
-     * @param invalid an invalid (but type-safe) default
-     * @return the value entered by the user or the invalid default
-     */
-    
-    public static int getInt(Scanner in, int invalid) {
-        try {
-            return in.nextInt();                // try to read and return user-provided value
-        } catch (InputMismatchException e) {            
-            return invalid;                     // return default in the even of an type mismatch
-        } finally {
-            in.nextLine();                      // always consume the dangling newline character
-        }
->>>>>>> a162d68ab58ec0748c29f2066d300967bc53b871
-    }
+
 }

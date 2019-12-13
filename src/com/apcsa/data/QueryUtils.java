@@ -89,4 +89,23 @@ public class QueryUtils {
     		"SELECT title FROM assignments " +
     				"WHERE course_id = ?";
     
+    public static final String GET_COURSES =
+    		"SELECT course_no FROM courses " +
+    				"WHERE department_id = ?";
+    
+    public static final String GET_COURSE_ID_FROM_DEPARTMENT_ID = 
+    		"SELECT course_id FROM courses " +
+    				"WHERE course_no = ?";
+    
+    public static final String ADD_ASSIGNMENT = 
+    		"INSERT INTO assignments " +
+    	            "VALUES(?, ?, ?, ?, ?, ?, ?)";
+    
+    public static final String DELETE_ASSIGNMENT = 
+    		"DELETE FROM assignments " +
+    				"WHERE title = ?";
+    
+    public static final String PREVIOUS_ASSIGNMENT_ID =
+    		"SELECT count(*) FROM assignments ";
+    				
 }

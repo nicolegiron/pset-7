@@ -415,4 +415,105 @@ public class PowerSchool {
 
     	return "other";
     }
+    
+    public static ArrayList<String> getCourses(int departmentId) {
+    	ArrayList<String> courses = new ArrayList<String>();
+     	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSES)) {
+     			stmt.setInt(1, departmentId);
+     			
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   String result = rs.getString("course_no");
+                  	 courses.add(result);
+     				}
+     			}	
+     		return courses;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return courses;
+     }
+    
+    public static int getCourseIdFromCourseNo(String courseNo){
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID_FROM_DEPARTMENT_ID)) {
+
+               stmt.setString(1, courseNo);
+
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                       return rs.getInt("course_id");
+                   }
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+           return 1;
+    }
+    
+    public static int addAssignment(int courseId, int assignmentId, int markingPeriod, int isMidterm, int isFinal, String title, int pointValue) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.ADD_ASSIGNMENT)) {
+               
+    		   conn.setAutoCommit(false);
+               stmt.setInt(1, courseId);
+               stmt.setInt(2, assignmentId);
+               stmt.setInt(3, markingPeriod);
+               stmt.setInt(4, isMidterm);
+               stmt.setInt(5, isFinal);
+               stmt.setString(6, title);
+               stmt.setInt(7, pointValue);
+
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+               return -1;
+           }
+    }
+    
+    public static int assignmentRows() {
+    	try (Connection conn = getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(QueryUtils.PREVIOUS_ASSIGNMENT_ID)) {
+                  
+    		try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("count(*)");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 1;
+    }
+    
+    public static ArrayList<String> deleteAssignment(int courseId, int assignmentId, String title, int pointValue) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT)) {
+
+               conn.setAutoCommit(false);
+               stmt.setInt(1, courseId);
+               stmt.setInt(2, assignmentId);
+               stmt.setString(3, title);
+               stmt.setInt(4, pointValue);
+
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+               return -1;
+           }
+    }
 }
