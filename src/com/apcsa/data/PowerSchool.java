@@ -285,7 +285,7 @@ public class PowerSchool {
                e.printStackTrace();
            }
 
-           return "yes";
+           return "root";
     }
     
     public static ArrayList<Integer> getCourseId(User activeUser) {
