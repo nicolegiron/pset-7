@@ -11,6 +11,7 @@ public class Teacher extends User {
     private int departmentId;
     private String firstName;
     private String lastName;
+<<<<<<< HEAD
     
     public Teacher(User user, ResultSet rs) throws SQLException {
         super(user);
@@ -37,5 +38,8 @@ public class Teacher extends User {
     public String getLastName() {
     	return lastName;
     }
+=======
+    private String departmentName;
+>>>>>>> a162d68ab58ec0748c29f2066d300967bc53b871
 
 }
