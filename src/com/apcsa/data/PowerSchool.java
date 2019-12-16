@@ -494,15 +494,34 @@ public class PowerSchool {
         return 1;
     }
     
-    public static ArrayList<String> deleteAssignment(int courseId, int assignmentId, String title, int pointValue) {
+    public static ArrayList<String> getAssignments(int courseId, int markingPeriod) {
+    	ArrayList<String> assignments = new ArrayList<String>();
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENTS)) {
+     			stmt.setInt(1, courseId);
+     			stmt.setInt(2, markingPeriod);
+     			
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   String result = rs.getString("title");
+                  	 assignments.add(result);
+     				}
+     			}	
+     		return assignments;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return assignments;
+    }
+    
+    public static int deleteAssignment(int courseId, int markingPeriod, String title) {
     	try (Connection conn = getConnection();
            	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT)) {
-
-               conn.setAutoCommit(false);
+               
+    		   conn.setAutoCommit(false);
                stmt.setInt(1, courseId);
-               stmt.setInt(2, assignmentId);
+               stmt.setInt(2, markingPeriod);
                stmt.setString(3, title);
-               stmt.setInt(4, pointValue);
 
                if (stmt.executeUpdate() == 1) {
                    conn.commit();
@@ -512,8 +531,45 @@ public class PowerSchool {
                    return -1;
                }
            } catch (SQLException e) {
-               e.printStackTrace();
                return -1;
            }
     }
+    
+    public static int getPointValue(String title) {
+    	try (Connection conn = getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_POINT_VALUE)) {
+                  
+    		stmt.setString(1, title);
+    		
+    		try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("point_value");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 1;
+    }
+    
+    public static ArrayList<String> getAssignmentIds() {
+    	ArrayList<String> assignmentIds = new ArrayList<String>();
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_IDS)) {
+     			
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   String result = rs.getString("assignment_id");
+                  	 assignmentIds.add(result);
+     				}
+     			}	
+     		return assignmentIds;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return assignmentIds;
+    }
+    
+    
 }

@@ -103,9 +103,22 @@ public class QueryUtils {
     
     public static final String DELETE_ASSIGNMENT = 
     		"DELETE FROM assignments " +
-    				"WHERE title = ?";
+    				"WHERE course_id = ?" +
+    				"AND marking_period = ?" +
+    				"AND title = ?";
     
     public static final String PREVIOUS_ASSIGNMENT_ID =
     		"SELECT count(*) FROM assignments ";
-    				
+    
+    public static final String GET_ASSIGNMENTS = 
+    		"SELECT title FROM assignments " +
+    				"WHERE course_id = ?" +
+    				"AND marking_period = ?";
+    
+    public static final String GET_ASSIGNMENT_IDS =
+    		"SELECT assignment_id FROM assignments ";
+    
+    public static final String GET_POINT_VALUE =
+    		"SELECT point_value FROM assignments " +
+    				"WHERE title = ?";
 }

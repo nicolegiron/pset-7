@@ -237,18 +237,12 @@ public class Application {
     	for(int i = 0; i <= courses.size()-1; i++) {
     		System.out.println("[" + (i + 1) + "] " + courses.get(i));
     	}
+    	System.out.print("\n::: ");
     	int courseSelection = in.nextInt();
     	String courseNo = courses.get(courseSelection-1);
     	int courseId = PowerSchool.getCourseIdFromCourseNo(courseNo);
     	
-    	System.out.println("\nChoose a marking period or exam status.\n");
-    	System.out.println("[1] MP1 assignment.");
-    	System.out.println("[2] MP2 assignment.");
-    	System.out.println("[3] MP3 assignment.");
-    	System.out.println("[4] MP4 assignment.");
-    	System.out.println("[5] Midterm exam.");
-    	System.out.println("[6] Final exam.");
-    	System.out.print("\n::: ");
+    	printMarkingPeriods();
     	int markingPeriod = in.nextInt();
     	int isMidterm = 0;
     	int isFinal = 0;
@@ -272,14 +266,17 @@ public class Application {
 		}
     	int assignmentId = 0;
     	in.nextLine();
-    	System.out.print("Are you sure you want to create this assignment? (y/n)");
+    	System.out.print("Are you sure you want to create this assignment? (y/n) ");
     	String yesNo = in.nextLine();
     	if(yesNo.equals("y")) {
     		int rows = PowerSchool.assignmentRows();
     		if(rows == 0) {
     			assignmentId = 1;
     		} else {
-    			assignmentId = rows + 1;
+    			ArrayList<String> assignmentIds = PowerSchool.getAssignmentIds();
+    			String lastAssignmentId = assignmentIds.get(assignmentIds.size() - 1);
+        		System.out.println(lastAssignmentId);
+    			assignmentId = Integer.parseInt(lastAssignmentId) + 1;
     		}
     		PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
     		System.out.println("\nSuccessfully created assignment\n");
@@ -294,44 +291,41 @@ public class Application {
     	for(int i = 0; i <= courses.size()-1; i++) {
     		System.out.println("[" + (i + 1) + "] " + courses.get(i));
     	}
+    	System.out.print("\n::: ");
     	int courseSelection = in.nextInt();
     	String courseNo = courses.get(courseSelection-1);
     	int courseId = PowerSchool.getCourseIdFromCourseNo(courseNo);
     	
-    	System.out.println("\nChoose a marking period or exam status.\n");
-    	System.out.println("[1] MP1 assignment.");
-    	System.out.println("[2] MP2 assignment.");
-    	System.out.println("[3] MP3 assignment.");
-    	System.out.println("[4] MP4 assignment.");
-    	System.out.println("[5] Midterm exam.");
-    	System.out.println("[6] Final exam.");
-    	System.out.print("\n::: ");
-    	int assignmentId = in.nextInt();
+    	printMarkingPeriods();
+    	int markingPeriod = in.nextInt();
     	
     	System.out.println("\nChoose an assignment.\n");
-    	for(int i = 0; i <= courses.size()-1; i++) {
-    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+    	ArrayList<String> assignments = PowerSchool.getAssignments(courseId, markingPeriod);
+    	for(int i = 0; i <= assignments.size()-1; i++) {
+    		System.out.println("[" + (i + 1) + "] " + assignments.get(i) + " (" + PowerSchool.getPointValue(assignments.get(i)) + " pts)");
+    	}
+    	int assignmentSelection = in.nextInt();
+    	String title = assignments.get(assignmentSelection-1);
+    	
+    	in.nextLine();
+    	System.out.print("Are you sure you want to delete this assignment? (y/n) ");
+    	String yesNo = in.nextLine();
+    	if(yesNo.equals("y")) {
+    		PowerSchool.deleteAssignment(courseId, markingPeriod, title);
+            System.out.println("\nSuccessfully deleted " + title + "\n");
+    		
     	}
     }
     
     public void assignment() {
-    	System.out.println("\nChoose a course.");
+    	System.out.println("\nChoose a course.\n");
     	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
     	ArrayList<String> courses = PowerSchool.getCourseNumber(activeUser, courseIds);
-    	System.out.println("");
     	for(int i = 0; i <= courses.size()-1; i++) {
     		System.out.println("[" + (i + 1) + "] " + courses.get(i));
     	}
     	int courseSelection = in.nextInt();
-    	
-    	System.out.println("\nChoose a marking period or exam status.\n");
-    	System.out.println("[1] MP1 assignment.");
-    	System.out.println("[2] MP2 assignment.");
-    	System.out.println("[3] MP3 assignment.");
-    	System.out.println("[4] MP4 assignment.");
-    	System.out.println("[5] Midterm exam.");
-    	System.out.println("[6] Final exam.");
-    	System.out.print("\n::: ");
+    	printMarkingPeriods();
     	int assignmentSelection = in.nextInt();
     	ArrayList<String> grades = PowerSchool.getAssignmentTitle(assignmentSelection, courseIds);
     	System.out.println("");
@@ -414,6 +408,17 @@ public class Application {
             System.out.println("\nGoodbye!");
             System.exit(0);
         }
+    }
+    
+    public void printMarkingPeriods() {
+    	System.out.println("\nChoose a marking period or exam status.\n");
+    	System.out.println("[1] MP1 assignment.");
+    	System.out.println("[2] MP2 assignment.");
+    	System.out.println("[3] MP3 assignment.");
+    	System.out.println("[4] MP4 assignment.");
+    	System.out.println("[5] Midterm exam.");
+    	System.out.println("[6] Final exam.");
+    	System.out.print("\n::: ");
     }
     
 
