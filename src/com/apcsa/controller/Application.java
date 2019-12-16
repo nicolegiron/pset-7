@@ -96,7 +96,7 @@ public class Application {
     private void showAdministratorUI() {
     	while (activeUser != null) {
  			switch (administratorSelection()) {
-// 			case 1: faculty(); break;
+ 			case 1: faculty(); break;
 // 			case 2: facultyByDepartment(); break;
 // 			case 3: studentEnrollment(); break;
 // 			case 4: studentEnrollmentbyGrade(); break;
@@ -220,6 +220,13 @@ public class Application {
     	}
     }
     
+    public void faculty() {
+    	ArrayList<String> teachers = PowerSchool.getTeachers();
+    	for(int i = 0; i < teachers.size(); i = i + 2) {
+    		System.out.println(i+1 + ". " + teachers.get(i+1) + ", " + teachers.get(i) + " / " );
+    	}
+    }
+    
     public void enrollment() {
     	System.out.println("\nChoose a course.\n");
     	int departmentId = ((Teacher) activeUser).getDepartmentId();
@@ -279,7 +286,7 @@ public class Application {
     			assignmentId = Integer.parseInt(lastAssignmentId) + 1;
     		}
     		PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
-    		System.out.println("\nSuccessfully created assignment\n");
+    		System.out.println("\nSuccessfully created assignment.\n");
     	}
     	
     }
@@ -312,7 +319,7 @@ public class Application {
     	String yesNo = in.nextLine();
     	if(yesNo.equals("y")) {
     		PowerSchool.deleteAssignment(courseId, markingPeriod, title);
-            System.out.println("\nSuccessfully deleted " + title + "\n");
+            System.out.println("\nSuccessfully deleted " + title + ".\n");
     		
     	}
     }

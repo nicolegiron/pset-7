@@ -121,4 +121,8 @@ public class QueryUtils {
     public static final String GET_POINT_VALUE =
     		"SELECT point_value FROM assignments " +
     				"WHERE title = ?";
+    
+    public static final String GET_TEACHERS =
+    		"SELECT first_name, last_name FROM teachers ";
+    
 }
