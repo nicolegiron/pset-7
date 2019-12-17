@@ -591,4 +591,21 @@ public class PowerSchool {
      	return teachers;
     }
     
+    public static String getTeacherId(String firstName) {
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_ID)) {
+     			
+    			stmt.setString(1, firstName);
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   return rs.getString("teacher_id");
+     				}
+     			}	
+     			return "not working";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return "not working";
+    }
+    
 }

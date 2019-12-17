@@ -222,9 +222,19 @@ public class Application {
     
     public void faculty() {
     	ArrayList<String> teachers = PowerSchool.getTeachers();
+    	System.out.println("");
     	for(int i = 0; i < teachers.size(); i = i + 2) {
     		System.out.println(i+1 + ". " + teachers.get(i+1) + ", " + teachers.get(i) + " / " );
     	}
+    	System.out.println("");
+    	
+    	String teacherIds = null;
+    	ArrayList<String> teachers2 = new ArrayList<String>();
+    	for(int i = 0; i < teachers.size(); i = i + 2) {
+    		teacherIds = PowerSchool.getTeacherId(teachers.get(i));
+    		teachers2.add(teacherIds);
+    	}
+    	System.out.println(teachers2);
     }
     
     public void enrollment() {
