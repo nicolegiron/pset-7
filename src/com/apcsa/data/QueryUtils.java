@@ -140,4 +140,6 @@ public class QueryUtils {
     		"SELECT first_name, last_name FROM teachers " +
     				"WHERE department_id = ?";
     
+    public static final String GET_STUDENTS =
+    		"SELECT first_name, last_name, graduation FROM students ";
 }

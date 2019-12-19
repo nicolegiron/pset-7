@@ -654,8 +654,8 @@ public class PowerSchool {
      				while (rs.next()) {
                   	   String result = rs.getString("first_name");
                   	   String result2 = rs.getString("last_name");
-                  	 teachers.add(result);
-                  	teachers.add(result2);
+                  	   teachers.add(result);
+                  	   teachers.add(result2);
      				}
      			}	
      		return teachers;
@@ -665,4 +665,41 @@ public class PowerSchool {
      	return teachers;
     }
     
+    public static ArrayList<String> getStudents() {
+    	ArrayList<String> students = new ArrayList<String>();
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENTS)) {
+     			
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   String result = rs.getString("first_name");
+                  	   String result2 = rs.getString("last_name");
+                  	   students.add(result);
+                  	   students.add(result2);
+     				}
+     			}	
+     		return students;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return students;
+    }
+    
+    public static ArrayList<String> getGradYears() {
+    	ArrayList<String> gradYears = new ArrayList<String>();
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENTS)) {
+     			
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   String result = rs.getString("graduation");
+                  	   gradYears.add(result);
+     				}
+     			}	
+     		return gradYears;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return gradYears;
+    }
 }

@@ -98,7 +98,7 @@ public class Application {
  			switch (administratorSelection()) {
  			case 1: faculty(); break;
  			case 2: facultyByDepartment(); break;
-// 			case 3: studentEnrollment(); break;
+ 			case 3: studentEnrollment(); break;
 // 			case 4: studentEnrollmentbyGrade(); break;
 // 			case 5: studentEnrollmentbyCourse(); break;
  			case 6: resetPassword(); break;
@@ -250,10 +250,21 @@ public class Application {
     	int department = in.nextInt();
     	ArrayList<String> teachers = PowerSchool.getTeachersWithDepartmentId(department);
     	System.out.println("");
-    	for(int i = 0; i < teachers.size(); i = i + 2) {
-    		System.out.println((i+1) + ". " + teachers.get(i+1) + ", " + teachers.get(i) + " / " + departmentTitles.get(department-1) + "\n");
+    	for(int i = 0, x = 0; i < teachers.size(); i = i + 2) {
+    		System.out.println((x+1) + ". " + teachers.get(i+1) + ", " + teachers.get(i) + " / " + departmentTitles.get(department-1) + "\n");
+    		x += 1;
+    	}	
+    }
+    
+    public void studentEnrollment() {
+    	ArrayList<String> students = PowerSchool.getStudents();
+    	ArrayList<String> gradYears = PowerSchool.getGradYears();
+    	System.out.println("");
+    	for(int i = 0, x = 0; i < students.size(); i = i + 2) {
+    		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + gradYears.get(x));
+    		x += 1;
     	}
-    	
+    	System.out.println("");
     }
     
     public void enrollment() {
