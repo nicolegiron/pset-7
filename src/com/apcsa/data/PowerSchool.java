@@ -702,4 +702,27 @@ public class PowerSchool {
         }
      	return gradYears;
     }
+    
+    public static ArrayList<String> getStudentsByGrade(int gradeLevel) {
+    	ArrayList<String> students = new ArrayList<String>();
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENTS_BY_GRADE)) {
+     			
+    			stmt.setInt(1,  gradeLevel);
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   String result = rs.getString("first_name");
+                  	   String result2 = rs.getString("last_name");
+                  	   String result3 = rs.getString("gpa");
+                  	   students.add(result);
+                  	   students.add(result2);
+                  	   students.add(result3);
+     				}
+     			}	
+     		return students;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return students;
+    }
 }

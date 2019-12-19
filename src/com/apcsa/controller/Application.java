@@ -99,7 +99,7 @@ public class Application {
  			case 1: faculty(); break;
  			case 2: facultyByDepartment(); break;
  			case 3: studentEnrollment(); break;
-// 			case 4: studentEnrollmentbyGrade(); break;
+ 			case 4: studentEnrollmentbyGrade(); break;
 // 			case 5: studentEnrollmentbyCourse(); break;
  			case 6: resetPassword(); break;
  			case 7: logout(); break;
@@ -262,6 +262,36 @@ public class Application {
     	System.out.println("");
     	for(int i = 0, x = 0; i < students.size(); i = i + 2) {
     		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + gradYears.get(x));
+    		x += 1;
+    	}
+    	System.out.println("");
+    }
+    
+    public void studentEnrollmentbyGrade() {
+    	System.out.println("\nChoose a grade level.\n");
+    	System.out.println("[1] Freshman.");
+    	System.out.println("[2] Sophomore.");
+    	System.out.println("[3] Junior.");
+    	System.out.println("[4] Senior.");
+    	System.out.print("\n::: ");
+    	int gradeLevel = in.nextInt();
+    	switch(gradeLevel) {
+	    	case 1: gradeLevel = 9; break;
+	    	case 2: gradeLevel = 10; break;
+	    	case 3: gradeLevel = 11; break;
+	    	case 4: gradeLevel = 12; break;
+	    	default: System.out.println("That is not a correct choice.");
+    	}
+    	ArrayList<String> students = PowerSchool.getStudentsByGrade(gradeLevel);
+    	System.out.println(students);
+    	
+    	System.out.println("");
+    	for(int i = 0, x = 0; i < students.size(); i = i + 3) {
+    		String gpa = students.get(i+2);
+    		if(gpa.equals("-1.0")) {
+    			gpa = "#0";
+    		}
+    		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + gpa);
     		x += 1;
     	}
     	System.out.println("");

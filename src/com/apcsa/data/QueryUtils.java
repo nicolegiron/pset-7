@@ -142,4 +142,8 @@ public class QueryUtils {
     
     public static final String GET_STUDENTS =
     		"SELECT first_name, last_name, graduation FROM students ";
+    
+    public static final String GET_STUDENTS_BY_GRADE =
+    		"SELECT first_name, last_name, gpa FROM students " +
+    				"WHERE grade_level = ?";
 }
