@@ -222,19 +222,23 @@ public class Application {
     
     public void faculty() {
     	ArrayList<String> teachers = PowerSchool.getTeachers();
-    	System.out.println("");
-    	for(int i = 0; i < teachers.size(); i = i + 2) {
-    		System.out.println(i+1 + ". " + teachers.get(i+1) + ", " + teachers.get(i) + " / " );
-    	}
-    	System.out.println("");
     	
-    	String teacherIds = null;
-    	ArrayList<String> teachers2 = new ArrayList<String>();
+    	String departmentId = null;
+    	ArrayList<String> departmentIds = new ArrayList<String>();
     	for(int i = 0; i < teachers.size(); i = i + 2) {
-    		teacherIds = PowerSchool.getTeacherId(teachers.get(i));
-    		teachers2.add(teacherIds);
+    		departmentId = PowerSchool.getDepartmentId(teachers.get(i));
+    		departmentIds.add(departmentId);
     	}
-    	System.out.println(teachers2);
+    	ArrayList<String> departmentTitles = new ArrayList<String>();
+    	for(int i = 0; i < departmentIds.size(); i++) {
+    		departmentTitles.add ( PowerSchool.getDepartmentTitle(departmentIds.get(i)));
+    	}
+    	System.out.println("");
+    	for(int i = 0, x = 0; i < teachers.size(); i = i + 2) {;
+    		System.out.println((x+1) + ". " + teachers.get(i+1) + ", " + teachers.get(i) + " / " + departmentTitles.get(x));
+    		x += 1;
+    	}
+    	System.out.println("");
     }
     
     public void enrollment() {

@@ -125,8 +125,12 @@ public class QueryUtils {
     public static final String GET_TEACHERS =
     		"SELECT first_name, last_name FROM teachers ";
     
-    public static final String GET_TEACHER_ID = 
-    		"SELECT teacher_id FROM teachers " +
+    public static final String GET_DEPARTMENT_ID = 
+    		"SELECT department_id FROM teachers " +
     			"WHERE first_name = ?";
+    
+    public static final String GET_DEPARTMENT_TITLE = 
+    		"SELECT title FROM departments " +
+    				"WHERE department_id = ?";
     
 }
