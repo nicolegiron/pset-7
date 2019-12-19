@@ -625,4 +625,22 @@ public class PowerSchool {
 		return "not working";
     }
     
+    public static ArrayList<String> getAllDepartmentTitles() {
+    	ArrayList<String> departmentTitles = new ArrayList<String>();
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ALL_DEPARTMENT_TITLES)) {
+     			
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   String result = rs.getString("title");
+                  	 departmentTitles.add(result);
+     				}
+     			}	
+     		return departmentTitles;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return departmentTitles;
+    }
+    
 }

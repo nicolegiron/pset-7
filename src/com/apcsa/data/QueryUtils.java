@@ -133,4 +133,7 @@ public class QueryUtils {
     		"SELECT title FROM departments " +
     				"WHERE department_id = ?";
     
+    public static final String GET_ALL_DEPARTMENT_TITLES =
+    		"SELECT title FROM departments ";
+    
 }

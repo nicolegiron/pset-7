@@ -97,7 +97,7 @@ public class Application {
     	while (activeUser != null) {
  			switch (administratorSelection()) {
  			case 1: faculty(); break;
-// 			case 2: facultyByDepartment(); break;
+ 			case 2: facultyByDepartment(); break;
 // 			case 3: studentEnrollment(); break;
 // 			case 4: studentEnrollmentbyGrade(); break;
 // 			case 5: studentEnrollmentbyCourse(); break;
@@ -221,8 +221,8 @@ public class Application {
     }
     
     public void faculty() {
-    	ArrayList<String> teachers = PowerSchool.getTeachers();
     	
+    	ArrayList<String> teachers = PowerSchool.getTeachers();
     	String departmentId = null;
     	ArrayList<String> departmentIds = new ArrayList<String>();
     	for(int i = 0; i < teachers.size(); i = i + 2) {
@@ -239,6 +239,17 @@ public class Application {
     		x += 1;
     	}
     	System.out.println("");
+    }
+    
+    public void facultyByDepartment() {
+    	System.out.println("\nChoose a department.\n");
+    	ArrayList<String> departmentTitles = PowerSchool.getAllDepartmentTitles();
+    	for(int i = 0; i<departmentTitles.size(); i++) {
+    		System.out.println("[" + (i+1) + "] " + departmentTitles.get(i));
+    	}
+    	System.out.print("\n::: ");
+    	int department = in.nextInt();
+
     }
     
     public void enrollment() {
