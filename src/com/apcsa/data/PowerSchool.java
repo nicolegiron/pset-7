@@ -643,4 +643,26 @@ public class PowerSchool {
      	return departmentTitles;
     }
     
+    public static ArrayList<String> getTeachersWithDepartmentId(int department) {
+    	ArrayList<String> teachers = new ArrayList<String>();
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHERS_WITH_DEPARTMENT_ID)) {
+     			
+    			stmt.setInt(1, department);
+    			
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   String result = rs.getString("first_name");
+                  	   String result2 = rs.getString("last_name");
+                  	 teachers.add(result);
+                  	teachers.add(result2);
+     				}
+     			}	
+     		return teachers;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return teachers;
+    }
+    
 }
