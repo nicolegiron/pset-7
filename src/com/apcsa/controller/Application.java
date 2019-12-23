@@ -100,7 +100,7 @@ public class Application {
  			case 2: facultyByDepartment(); break;
  			case 3: studentEnrollment(); break;
  			case 4: studentEnrollmentbyGrade(); break;
-// 			case 5: studentEnrollmentbyCourse(); break;
+ 			case 5: studentEnrollmentbyCourse(); break;
  			case 6: resetPassword(); break;
  			case 7: logout(); break;
  			default: System.out.println("\nInvalid selection. \n"); break;
@@ -199,7 +199,7 @@ public class Application {
     	System.out.println("Are you sure you want to reset all settings and data? (y/n)");
     	String reset = in.nextLine();
     	if(reset.equals("y")) {
-    		
+    		PowerSchool.initialize(true);
     		System.out.println("Successfully reset database.");
     	}
     }
@@ -283,13 +283,42 @@ public class Application {
 	    	default: System.out.println("That is not a correct choice.");
     	}
     	ArrayList<String> students = PowerSchool.getStudentsByGrade(gradeLevel);
-    	System.out.println(students);
     	
     	System.out.println("");
     	for(int i = 0, x = 0; i < students.size(); i = i + 3) {
     		String gpa = students.get(i+2);
     		if(gpa.equals("-1.0")) {
     			gpa = "#0";
+    		}
+    		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + gpa);
+    		x += 1;
+    	}
+    	System.out.println("");
+    }
+    
+    public void studentEnrollmentbyCourse() {
+    	in.nextLine();
+    	System.out.print("\nCourse No.: ");
+    	String courseNo = in.nextLine();
+    	courseNo = courseNo.toUpperCase();
+    	ArrayList<String> courses = PowerSchool.getAllCourses();
+    	while(!courses.contains(courseNo)) {
+    		System.out.println("\nCourse not found.\n");
+    		System.out.print("Course No.: ");
+        	courseNo = in.nextLine();
+    	}
+    	String courseId = PowerSchool.getCourseIdFromCourseNo2(courseNo);
+    	ArrayList<String> studentIds = PowerSchool.getStudentId(courseId);
+    	ArrayList<String> students = new ArrayList<String>();
+    	for(int i = 0; i < studentIds.size()-1; i++) {
+    		students.addAll(PowerSchool.getStudentsByStudentId(studentIds.get(i+1)));
+    	}
+    	
+    	System.out.println("");
+    	for(int i = 0, x = 0; i < students.size(); i = i + 3) {
+    		String gpa = students.get(i+2);
+    		if(gpa.equals("-1.0")) {
+    			gpa = "--";
     		}
     		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + gpa);
     		x += 1;

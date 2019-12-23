@@ -146,4 +146,19 @@ public class QueryUtils {
     public static final String GET_STUDENTS_BY_GRADE =
     		"SELECT first_name, last_name, gpa FROM students " +
     				"WHERE grade_level = ?";
+    
+    public static final String GET_ALL_COURSES = 
+    		"SELECT course_no FROM courses ";
+    
+    public static final String GET_COURSE_ID_FROM_COURSE_NO =
+    		"SELECT course_id FROM courses " +
+    				"WHERE course_no = ?";
+    
+    public static final String GET_STUDENT_ID_FROM_COURSE_ID =
+    		"SELECT student_id FROM course_grades " +
+    				"WHERE course_id = ?";
+    
+    public static final String GET_STUDENTS_BY_STUDENT_ID = 
+    		"SELECT first_name, last_name, gpa FROM students " +
+    				"WHERE student_id = ?";
 }
