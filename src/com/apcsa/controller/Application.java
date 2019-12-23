@@ -114,7 +114,7 @@ public class Application {
  			case 1: enrollment(); break;
  			case 2: addAssignment(); break;
  			case 3: deleteAssignment(); break;
-// 			case 4: enterGrade(); break;
+ 			case 4: enterGrade(); break;
  			case 5: resetPassword(); break;
  			case 6: logout(); break;
  			default: System.out.println("\nInvalid selection. \n"); break;
@@ -423,6 +423,14 @@ public class Application {
     	}
     }
     
+    public void enterGrade() {
+    	printCourses();
+    	int courseSelection = in.nextInt();
+    	printMarkingPeriods();
+    	int markingPeriodSelection = in.nextInt();
+    	System.out.println("\nChoose an assignment.\n");
+    }
+    
     public void assignment() {
     	System.out.println("\nChoose a course.\n");
     	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
@@ -454,7 +462,7 @@ public class Application {
     
     public void changePass(String username, String newPassword) {
     	PowerSchool.updatePassword(username, newPassword);
-    	System.out.println("\nSuccessfully changed password.\n");
+    	System.out.println("\nSuccessfully changed password.");
     }
     
     /**
@@ -524,6 +532,16 @@ public class Application {
     	System.out.println("[4] MP4 assignment.");
     	System.out.println("[5] Midterm exam.");
     	System.out.println("[6] Final exam.");
+    	System.out.print("\n::: ");
+    }
+    
+    public void printCourses() {
+    	System.out.println("\nChoose a course.\n");
+    	int departmentId = ((Teacher) activeUser).getDepartmentId();
+    	ArrayList<String> courses = PowerSchool.getCourses(departmentId);
+    	for(int i = 0; i <= courses.size()-1; i++) {
+    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+    	}
     	System.out.print("\n::: ");
     }
     
