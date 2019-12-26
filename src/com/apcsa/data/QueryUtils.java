@@ -161,4 +161,9 @@ public class QueryUtils {
     public static final String GET_STUDENTS_BY_STUDENT_ID = 
     		"SELECT first_name, last_name, gpa FROM students " +
     				"WHERE student_id = ?";
+    
+    public static final String UPDATE_PASSWORD_AND_TIME =
+            "UPDATE users " +
+                "SET auth = ? , last_login = ? " +
+            "WHERE username = ?";
 }

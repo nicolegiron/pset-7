@@ -6,8 +6,6 @@ import com.apcsa.data.PowerSchool;
 import com.apcsa.model.Teacher;
 import com.apcsa.model.User;
 
-enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN }
-
 public class Application {
 
     private Scanner in;
@@ -84,10 +82,10 @@ public class Application {
     private void showRootUI() {
     	while (activeUser != null) {
     		switch (getRootMenuSelection()) {
-            case PASSWORD: resetPassword(); break;
-            case DATABASE: factoryReset(); break;
-            case LOGOUT: logout(); break;
-            case SHUTDOWN: shutdown(); break;
+            case 1: rootResetPassword(); break;
+            case 2: factoryReset(); break;
+            case 3: logout(); break;
+            case 4: shutdown(); break;
             default: System.out.println("\nInvalid selection."); break;
         	}
     	}
@@ -134,20 +132,15 @@ public class Application {
          }
     }
     
-    private RootAction getRootMenuSelection() {
+    public int getRootMenuSelection() {
     	System.out.println("[1] Reset user password.");
-        System.out.println("[2] Factory reset database.");
-        System.out.println("[3] Logout.");
-        System.out.println("[4] Shutdown.");
-        System.out.print("\n::: ");
+    	System.out.println("[2] Factory reset database.");
+    	System.out.println("[3] Logout.");
+    	System.out.println("[4] Shutdown.");
+    	System.out.print("\n::: ");
+    	int selection = in.nextInt();
+    	return selection;
         
-        switch (Utils.getInt(in, -1)) {
-            case 1: return RootAction.PASSWORD;
-            case 2: return RootAction.DATABASE;
-            case 3: return RootAction.LOGOUT;
-            case 4: return RootAction.SHUTDOWN;
-            default: return null;
-        }
     }
     
     public int administratorSelection() {
@@ -168,8 +161,8 @@ public class Application {
     	System.out.println("[2] Add assignment.");
     	System.out.println("[3] Delete assignment.");
     	System.out.println("[4] Enter grade.");
-    	System.out.println("[6] Change password.");
-    	System.out.println("[7] Logout.");
+    	System.out.println("[5] Change password.");
+    	System.out.println("[6] Logout.");
     	System.out.print("\n::: ");
     	int selection = in.nextInt();
 		return selection;
@@ -187,7 +180,7 @@ public class Application {
     
     private void logout() {
     	in.nextLine();
-    	System.out.println("\nAre you sure you want to logout? (y/n)");
+    	System.out.print("\nAre you sure you want to logout? (y/n) ");
     	String logout = in.nextLine();
     	if(logout.equals("y")) {
     		activeUser = null;
@@ -196,11 +189,26 @@ public class Application {
     
     private void factoryReset() {
     	in.nextLine();
-    	System.out.println("Are you sure you want to reset all settings and data? (y/n)");
+    	System.out.print("\nAre you sure you want to reset all settings and data? (y/n) ");
     	String reset = in.nextLine();
     	if(reset.equals("y")) {
     		PowerSchool.initialize(true);
-    		System.out.println("Successfully reset database.");
+    		System.out.println("\nSuccessfully reset database.\n");
+    	}
+    }
+    
+    public void rootResetPassword() {
+    	in.nextLine();
+    	System.out.print("\nUsername: ");
+    	String username = in.nextLine();
+    	System.out.print("Are you sure you want to reset the password for " + username + "? (y/n) ");
+    	String yOn = in.nextLine();
+    	yOn = yOn.toLowerCase();
+    	if (yOn.equals("y")) {
+    		int worked = PowerSchool.updatePasswordAndTime(username);
+    		if(worked == 1) {
+    			System.out.println("\nSuccessfully reset password for " + username + ".\n");
+    		}
     	}
     }
     
@@ -381,7 +389,6 @@ public class Application {
     		} else {
     			ArrayList<String> assignmentIds = PowerSchool.getAssignmentIds();
     			String lastAssignmentId = assignmentIds.get(assignmentIds.size() - 1);
-        		System.out.println(lastAssignmentId);
     			assignmentId = Integer.parseInt(lastAssignmentId) + 1;
     		}
     		PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
@@ -424,7 +431,13 @@ public class Application {
     }
     
     public void enterGrade() {
-    	printCourses();
+    	System.out.println("\nChoose a course.\n");
+    	int departmentId = ((Teacher) activeUser).getDepartmentId();
+    	ArrayList<String> courses = PowerSchool.getCourses(departmentId);
+    	for(int i = 0; i <= courses.size()-1; i++) {
+    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+    	}
+    	System.out.print("\n::: ");
     	int courseSelection = in.nextInt();
     	printMarkingPeriods();
     	int markingPeriodSelection = in.nextInt();
@@ -532,16 +545,6 @@ public class Application {
     	System.out.println("[4] MP4 assignment.");
     	System.out.println("[5] Midterm exam.");
     	System.out.println("[6] Final exam.");
-    	System.out.print("\n::: ");
-    }
-    
-    public void printCourses() {
-    	System.out.println("\nChoose a course.\n");
-    	int departmentId = ((Teacher) activeUser).getDepartmentId();
-    	ArrayList<String> courses = PowerSchool.getCourses(departmentId);
-    	for(int i = 0; i <= courses.size()-1; i++) {
-    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
-    	}
     	System.out.print("\n::: ");
     }
     
