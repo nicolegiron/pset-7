@@ -470,8 +470,45 @@ public class Application {
     	for(int i = 0; i <= assignments.size()-1; i++) {
     		System.out.println("[" + (i + 1) + "] " + assignments.get(i) + " (" + PowerSchool.getPointValue(assignments.get(i)) + " pts)");
     	}
+    	System.out.print("\n::: ");
     	int assignmentSelection = in.nextInt();
     	String title = assignments.get(assignmentSelection-1);
+    	
+    	String StringCourseId = PowerSchool.getCourseIdFromCourseNo2(courseNo);
+    	ArrayList<String> studentIds = PowerSchool.getStudentId(StringCourseId);
+    	ArrayList<String> students = new ArrayList<String>();
+    	for(int i = 0; i < studentIds.size(); i++) {
+    		students.addAll(PowerSchool.getStudentsByStudentId(studentIds.get(i)));
+    	}
+    	ArrayList<String> studentsFirstNames = new ArrayList<String>();
+    	for(int i = 0; i < studentIds.size(); i++) {
+    		studentsFirstNames.addAll(PowerSchool.getStudentsFirstNames(studentIds.get(i)));
+    	}
+    	ArrayList<String> studentLastNames = new ArrayList<String>();
+    	for(int i = 0; i < studentIds.size(); i++) {
+    		studentLastNames.addAll(PowerSchool.getStudentsLastNames(studentIds.get(i)));
+    	}
+    	System.out.println("\nChoose a student.\n");
+    	for(int i = 0, x = 1; i < students.size(); i = i + 3) {
+    		System.out.println("[" + (x) + "] " + students.get(i+1) + ", " + students.get(i));
+    		x++;
+    	}
+    	System.out.print("\n::: ");
+    	int studentSelection = in.nextInt();
+    	String studentLastName = studentLastNames.get(studentSelection-1);
+    	String studentFirstName = studentsFirstNames.get(studentSelection-1);
+    	System.out.println("\nAssignment: " + title);
+    	System.out.println("Student: " + studentLastName + ", " + studentFirstName);
+    	System.out.println("Current Grade: ");
+    	System.out.print("\nNew Grade: ");
+    	String newGrade = in.nextLine();
+    	in.nextLine();
+    	System.out.print("Are you sure you want to enter this grade? (y/n) ");
+    	String yOn = in.nextLine();
+    	if(yOn.equals("y")) {
+    		System.out.println("Here");
+    	}
+    	
     }
     
     public void assignment() {

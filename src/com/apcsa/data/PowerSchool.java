@@ -834,4 +834,40 @@ public class PowerSchool {
         }
      	return "no";
     }
+    
+    public static ArrayList<String> getStudentsFirstNames(String studentIds) {
+    	ArrayList<String> students = new ArrayList<String>();
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENTS_FIRST_NAMES)) {
+     			
+    			stmt.setString(1,  studentIds);
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   students.add(rs.getString("first_name"));
+     				}
+     			}	
+     		return students;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return students;
+    }
+    
+    public static ArrayList<String> getStudentsLastNames(String studentIds) {
+    	ArrayList<String> students = new ArrayList<String>();
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENTS_LAST_NAMES)) {
+     			
+    			stmt.setString(1,  studentIds);
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+                  	   students.add(rs.getString("last_name"));
+     				}
+     			}	
+     		return students;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return students;
+    }
 }
