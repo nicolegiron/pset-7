@@ -166,4 +166,9 @@ public class QueryUtils {
             "UPDATE users " +
                 "SET auth = ? , last_login = ? " +
             "WHERE username = ?";
+    
+    public static final String GET_STUDENT_GRADE =
+    		"SELECT grade FROM course_grades " +
+    				"WHERE course_id = ? " +
+    				"AND student_id = ?";
 }

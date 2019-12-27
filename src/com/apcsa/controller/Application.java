@@ -214,16 +214,16 @@ public class Application {
     
     public void resetPassword() {
     	in.nextLine();
-    	System.out.println("\nEnter current password: ");
+    	System.out.print("\nEnter current password: ");
     	String currentPassword = in.nextLine();
-    	System.out.println("Enter new password: ");
+    	System.out.print("Enter new password: ");
     	String newPassword = in.nextLine();
     	
     	String truePassword = PowerSchool.getPassword(activeUser, currentPassword);
     	
     	if(!Utils.getHash(currentPassword).equals(truePassword)) {
     		System.out.println("\nInvalid current password.\n");
-    	}else {
+    	} else {
     		changePass(activeUser.getUsername(), newPassword);
     	}
     }
@@ -252,7 +252,7 @@ public class Application {
     	System.out.println("\nChoose a department.\n");
     	ArrayList<String> departmentTitles = PowerSchool.getAllDepartmentTitles();
     	for(int i = 0; i<departmentTitles.size(); i++) {
-    		System.out.println("[" + (i+1) + "] " + departmentTitles.get(i));
+    		System.out.println("[" + (i+1) + "] " + departmentTitles.get(i) + ".");
     	}
     	System.out.print("\n::: ");
     	int department = in.nextInt();
@@ -341,7 +341,29 @@ public class Application {
     	for(int i = 0; i <= courses.size()-1; i++) {
     		System.out.println("[" + (i + 1) + "] " + courses.get(i));
     	}
+    	System.out.print("\n::: ");
     	int courseSelection = in.nextInt();
+    	String courseNo = courses.get(courseSelection-1);
+    	String courseId = PowerSchool.getCourseIdFromCourseNo2(courseNo);
+    	ArrayList<String> studentIds = PowerSchool.getStudentId(courseId);
+    	ArrayList<String> students = new ArrayList<String>();
+    	for(int i = 0; i < studentIds.size(); i++) {
+    		students.addAll(PowerSchool.getStudentsByStudentId(studentIds.get(i)));
+    	}
+    	ArrayList<String> studentGrades = new ArrayList<String>();
+    	for(int i = 0; i < studentIds.size(); i++) {
+    		studentGrades.add(PowerSchool.getStudentGrade(courseId, studentIds.get(i)));
+    	}
+    	System.out.println("");
+    	for(int i = 0, x = 0; i < students.size(); i = i + 3) {
+    		String studentGrade = studentGrades.get(x);
+    		if(studentGrade == null) {
+    			studentGrade = "--";
+    		}
+    		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + studentGrade);
+    		x += 1;
+    	}
+    	System.out.println("");
     }
     
     public void addAssignment() {
@@ -439,9 +461,17 @@ public class Application {
     	}
     	System.out.print("\n::: ");
     	int courseSelection = in.nextInt();
+    	String courseNo = courses.get(courseSelection-1);
+    	int courseId = PowerSchool.getCourseIdFromCourseNo(courseNo);
     	printMarkingPeriods();
-    	int markingPeriodSelection = in.nextInt();
+    	int markingPeriod = in.nextInt();
     	System.out.println("\nChoose an assignment.\n");
+    	ArrayList<String> assignments = PowerSchool.getAssignments(courseId, markingPeriod);
+    	for(int i = 0; i <= assignments.size()-1; i++) {
+    		System.out.println("[" + (i + 1) + "] " + assignments.get(i) + " (" + PowerSchool.getPointValue(assignments.get(i)) + " pts)");
+    	}
+    	int assignmentSelection = in.nextInt();
+    	String title = assignments.get(assignmentSelection-1);
     }
     
     public void assignment() {
@@ -475,7 +505,7 @@ public class Application {
     
     public void changePass(String username, String newPassword) {
     	PowerSchool.updatePassword(username, newPassword);
-    	System.out.println("\nSuccessfully changed password.");
+    	System.out.println("\nSuccessfully changed password.\n");
     }
     
     /**

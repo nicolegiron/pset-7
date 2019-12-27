@@ -806,15 +806,32 @@ public class PowerSchool {
                 conn.commit();
                 return 1;
             } else {
-            	System.out.println("Here");
+            	System.out.println("\nUser " + username + " does not exsist.\n");
                 conn.rollback();
                 return -1;
             }
         } catch (SQLException e) {
-        	System.out.println("Here 2");
             e.printStackTrace();
 
             return -1;
         }
+    }
+    
+    public static String getStudentGrade(String courseId, String studentId) {
+    	try (Connection conn = getConnection();
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_GRADE)) {
+     			
+    			stmt.setString(1,  courseId);
+    			stmt.setString(2,  studentId);
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+     					return rs.getString("grade");
+     				}
+     			}	
+     		return "no";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return "no";
     }
 }
