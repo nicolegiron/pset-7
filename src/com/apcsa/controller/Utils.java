@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -185,7 +185,15 @@ public class Utils {
      * @return the rounded value
      */
         
-
+    public static Double round(Double grades, int decimals) {
+    	String decimalPlaces = "#.";
+    	for(int i = 0; i < decimals; i++) {
+    		decimalPlaces += "#";
+    	}
+    	DecimalFormat df = new DecimalFormat(decimalPlaces);
+    	double grade = Double.parseDouble(df.format(grades));
+    	return grade;
+    }
     
 
 }

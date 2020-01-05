@@ -107,6 +107,10 @@ public class QueryUtils {
     				"AND marking_period = ?" +
     				"AND title = ?";
     
+    public static final String DELETE_ASSIGNMENT_GRADE = 
+    		"DELETE FROM assignments " +
+    				"WHERE assignment_id = ?";
+    
     public static final String PREVIOUS_ASSIGNMENT_ID =
     		"SELECT count(*) FROM assignments ";
     
@@ -179,4 +183,46 @@ public class QueryUtils {
     public static final String GET_STUDENTS_LAST_NAMES = 
     		"SELECT last_name FROM students " +
     				"WHERE student_id = ?";
+    
+    public static final String ADD_ASSIGNMENT_GRADE =
+            "INSERT INTO assignment_grades " +
+                "VALUES(?, ?, ?, ?, ?, ?)";
+    
+    public static final String GET_ASSIGNMENT_ID_FROM_TITLE =
+    		"SELECT assignment_id FROM assignments " +
+    				"WHERE title = ?";
+    
+    public static final String ROWS_IN_ASSIGNMENT_GRADES =
+    		"SELECT count(*) FROM assignment_grades ";
+    
+    public static final String PREVIOUS_GRADE = 
+    		"SELECT points_earned FROM assignment_grades " +
+    				"WHERE course_id = ?" +
+    				"AND assignment_id = ?" +
+    				"AND student_id = ?";
+    
+    public static final String FIND_GRADE =
+    		"SELECT is_graded FROM assignment_grades " + 
+    				"WHERE course_id = ? " + 
+    				"AND assignment_id = ? " +
+    				"AND student_id = ?";
+    
+    public static final String UPDATE_ASSIGNMENT_GRADE = 
+    		"UPDATE assignment_grades " +
+    				"SET points_earned = ? " +
+    				"WHERE course_id = ?" +
+    				"AND assignment_id = ?" +
+    				"AND student_id = ?";
+    
+    public static final String UPDATE_COURSE_GRADES = 
+    		"UPDATE course_grades " +
+    				"SET ? = ? " +
+    				"WHERE course_id = ?" +
+    				"AND student_id = ?";
+    
+    public static final String GET_GRADES = 
+    		"SELECT points_earned FROM assignment_grades " +
+    				"WHERE course_id = ? " +
+    				"AND student_id = ?";
+    		
 }

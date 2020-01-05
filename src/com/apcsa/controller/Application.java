@@ -86,7 +86,7 @@ public class Application {
             case 2: factoryReset(); break;
             case 3: logout(); break;
             case 4: shutdown(); break;
-            default: System.out.println("\nInvalid selection."); break;
+            default: System.out.println("\nInvalid selection.\n"); break;
         	}
     	}
     }
@@ -182,8 +182,16 @@ public class Application {
     	in.nextLine();
     	System.out.print("\nAre you sure you want to logout? (y/n) ");
     	String logout = in.nextLine();
-    	if(logout.equals("y")) {
+    	if(!logout.equals("y") && !logout.equals("n")) {
+    		while(!logout.equals("y") && !logout.equals("n")) {
+    			System.out.println("\nInvalid selection.");
+    			System.out.print("\nAre you sure you want to logout? (y/n) ");
+    	    	logout = in.nextLine();
+    		}
+    	} else if (logout.equals("y")) {
     		activeUser = null;
+    	} else if (logout.equals("n")){
+    		System.out.println("");
     	}
     }
     
@@ -225,6 +233,7 @@ public class Application {
     		System.out.println("\nInvalid current password.\n");
     	} else {
     		changePass(activeUser.getUsername(), newPassword);
+    		System.out.println("");
     	}
     }
     
@@ -256,6 +265,20 @@ public class Application {
     	}
     	System.out.print("\n::: ");
     	int department = in.nextInt();
+    	
+    	if(department < 1 || department > departmentTitles.size()) {
+    		while(department < 1 || department > departmentTitles.size()) {
+    			System.out.println("\nInvalid selection.");
+    			System.out.println("\nChoose a department.\n");
+    	    	departmentTitles = PowerSchool.getAllDepartmentTitles();
+    	    	for(int i = 0; i<departmentTitles.size(); i++) {
+    	    		System.out.println("[" + (i+1) + "] " + departmentTitles.get(i) + ".");
+    	    	}
+    	    	System.out.print("\n::: ");
+    	    	department = in.nextInt();
+    		}
+    	}
+    	
     	ArrayList<String> teachers = PowerSchool.getTeachersWithDepartmentId(department);
     	System.out.println("");
     	for(int i = 0, x = 0; i < teachers.size(); i = i + 2) {
@@ -292,16 +315,20 @@ public class Application {
     	}
     	ArrayList<String> students = PowerSchool.getStudentsByGrade(gradeLevel);
     	
-    	System.out.println("");
-    	for(int i = 0, x = 0; i < students.size(); i = i + 3) {
-    		String gpa = students.get(i+2);
-    		if(gpa.equals("-1.0")) {
-    			gpa = "#0";
-    		}
-    		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + gpa);
-    		x += 1;
+    	if(students.isEmpty()) {
+    		System.out.println("\nThere are no students in this grade.\n");
+    	} else {
+    		System.out.println("");
+        	for(int i = 0, x = 0; i < students.size(); i = i + 3) {
+        		String gpa = students.get(i+2);
+        		if(gpa.equals("-1.0")) {
+        			gpa = "#0";
+        		}
+        		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + gpa);
+        		x += 1;
+        	}
+        	System.out.println("");
     	}
-    	System.out.println("");
     }
     
     public void studentEnrollmentbyCourse() {
@@ -354,16 +381,20 @@ public class Application {
     	for(int i = 0; i < studentIds.size(); i++) {
     		studentGrades.add(PowerSchool.getStudentGrade(courseId, studentIds.get(i)));
     	}
-    	System.out.println("");
-    	for(int i = 0, x = 0; i < students.size(); i = i + 3) {
-    		String studentGrade = studentGrades.get(x);
-    		if(studentGrade == null) {
-    			studentGrade = "--";
-    		}
-    		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + studentGrade);
-    		x += 1;
+    	if(studentIds.isEmpty()) {
+    		System.out.println("\nThere are no students in this course.\n");
+    	} else {
+    		System.out.println("");
+    		for(int i = 0, x = 0; i < students.size(); i = i + 3) {
+        		String studentGrade = studentGrades.get(x);
+        		if(studentGrade == null) {
+        			studentGrade = "--";
+        		}
+        		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + studentGrade);
+        		x += 1;
+        	}
+        	System.out.println("");
     	}
-    	System.out.println("");
     }
     
     public void addAssignment() {
@@ -375,11 +406,28 @@ public class Application {
     	}
     	System.out.print("\n::: ");
     	int courseSelection = in.nextInt();
+    	while(courseSelection > courses.size() || courseSelection < 1) {
+    		System.out.println("\nInvalid selection.");
+    		System.out.println("\nChoose a course.\n");
+        	for(int i = 0; i <= courses.size()-1; i++) {
+        		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+        	}
+        	System.out.print("\n::: ");
+        	courseSelection = in.nextInt();
+    	}
+    	
     	String courseNo = courses.get(courseSelection-1);
     	int courseId = PowerSchool.getCourseIdFromCourseNo(courseNo);
     	
     	printMarkingPeriods();
     	int markingPeriod = in.nextInt();
+    	
+    	while(markingPeriod > 6 || markingPeriod < 1) {
+    		System.out.println("\nInvalid selection.");
+    		printMarkingPeriods();
+        	markingPeriod = in.nextInt();
+    	}
+    	
     	int isMidterm = 0;
     	int isFinal = 0;
     	if(markingPeriod == 5) {
@@ -404,7 +452,13 @@ public class Application {
     	in.nextLine();
     	System.out.print("Are you sure you want to create this assignment? (y/n) ");
     	String yesNo = in.nextLine();
-    	if(yesNo.equals("y")) {
+    	if(!yesNo.equals("y") && !yesNo.equals("n")) {
+    		System.out.println("\nInvalid selection.\n");
+    		while(!yesNo.equals("y") && !yesNo.equals("n")) {
+    			System.out.print("Are you sure you want to create this assignment? (y/n) ");
+    	    	yesNo = in.nextLine();
+    		}
+    	} else if (yesNo.equals("y")) {
     		int rows = PowerSchool.assignmentRows();
     		if(rows == 0) {
     			assignmentId = 1;
@@ -415,11 +469,14 @@ public class Application {
     		}
     		PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
     		System.out.println("\nSuccessfully created assignment.\n");
+    	} else {
+    		System.out.println("");
     	}
     	
     }
     
     public void deleteAssignment() {
+    	boolean hasAssignment = true;
     	System.out.println("\nChoose a course.\n");
     	int departmentId = ((Teacher) activeUser).getDepartmentId();
     	ArrayList<String> courses = PowerSchool.getCourses(departmentId);
@@ -428,87 +485,166 @@ public class Application {
     	}
     	System.out.print("\n::: ");
     	int courseSelection = in.nextInt();
+    	
+    	while(courseSelection > courses.size() || courseSelection < 1) {
+    		System.out.println("\nInvalid selection.");
+    		System.out.println("\nChoose a course.\n");
+        	for(int i = 0; i <= courses.size()-1; i++) {
+        		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+        	}
+        	System.out.print("\n::: ");
+        	courseSelection = in.nextInt();
+    	}
+    	
     	String courseNo = courses.get(courseSelection-1);
     	int courseId = PowerSchool.getCourseIdFromCourseNo(courseNo);
     	
     	printMarkingPeriods();
     	int markingPeriod = in.nextInt();
     	
-    	System.out.println("\nChoose an assignment.\n");
+    	while(markingPeriod > 6 || markingPeriod < 1) {
+    		System.out.println("\nInvalid selection.");
+    		printMarkingPeriods();
+        	markingPeriod = in.nextInt();
+    	}
     	ArrayList<String> assignments = PowerSchool.getAssignments(courseId, markingPeriod);
-    	for(int i = 0; i <= assignments.size()-1; i++) {
-    		System.out.println("[" + (i + 1) + "] " + assignments.get(i) + " (" + PowerSchool.getPointValue(assignments.get(i)) + " pts)");
-    	}
-    	int assignmentSelection = in.nextInt();
-    	String title = assignments.get(assignmentSelection-1);
     	
-    	in.nextLine();
-    	System.out.print("Are you sure you want to delete this assignment? (y/n) ");
-    	String yesNo = in.nextLine();
-    	if(yesNo.equals("y")) {
-    		PowerSchool.deleteAssignment(courseId, markingPeriod, title);
-            System.out.println("\nSuccessfully deleted " + title + ".\n");
-    		
-    	}
+    	if(assignments.isEmpty()) {
+       		System.out.println("\nThere are no assignments here.\n");
+       		hasAssignment = false;
+        }
+        while(hasAssignment) {
+        	System.out.println("\nChoose an assignment.\n");
+        	
+        	for(int i = 0; i <= assignments.size()-1; i++) {
+        		System.out.println("[" + (i + 1) + "] " + assignments.get(i) + " (" + PowerSchool.getPointValue(assignments.get(i)) + " pts)");
+        	}
+        	System.out.print("\n::: ");
+        	int assignmentSelection = in.nextInt();
+        	
+        	while(assignmentSelection > assignments.size() || assignmentSelection < 1) {
+        		System.out.println("\nInvalid selection.");
+        		System.out.println("\nChoose an assignment.\n");
+            	
+            	for(int i = 0; i <= assignments.size()-1; i++) {
+            		System.out.println("[" + (i + 1) + "] " + assignments.get(i) + " (" + PowerSchool.getPointValue(assignments.get(i)) + " pts)");
+            	}
+            	System.out.print("\n::: ");
+            	assignmentSelection = in.nextInt();
+        	}
+        	
+        	String title = assignments.get(assignmentSelection-1);
+        	in.nextLine();
+        	System.out.print("\nAre you sure you want to delete this assignment? (y/n) ");
+        	String yesNo = in.nextLine();
+        	
+        	if(!yesNo.equals("y") && !yesNo.equals("n")) {
+        		System.out.println("\nInvalid selection.\n");
+        		while(!yesNo.equals("y") && !yesNo.equals("n")) {
+        			System.out.print("Are you sure you want to delete this assignment? (y/n) ");
+        	    	yesNo = in.nextLine();
+        		}
+        	} else if (yesNo.equals("y")) {
+        		PowerSchool.deleteAssignment(courseId, markingPeriod, title);
+        		PowerSchool.deleteAssignmentGrade(PowerSchool.getAssignmentIdFromTitle(title));
+                System.out.println("\nSuccessfully deleted " + title + ".\n");
+        	} else {
+        		System.out.println("");
+        	}
+        	hasAssignment = false;
+        }
     }
     
     public void enterGrade() {
-    	System.out.println("\nChoose a course.\n");
-    	int departmentId = ((Teacher) activeUser).getDepartmentId();
-    	ArrayList<String> courses = PowerSchool.getCourses(departmentId);
-    	for(int i = 0; i <= courses.size()-1; i++) {
-    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+    	boolean hasAssignment = true;    	
+   		System.out.println("\nChoose a course.\n");
+       	int departmentId = ((Teacher) activeUser).getDepartmentId(); //department id of the teacher
+       	ArrayList<String> courses = PowerSchool.getCourses(departmentId); //all courses
+       	for(int i = 0; i <= courses.size()-1; i++) {
+       		System.out.println("[" + (i + 1) + "] " + courses.get(i)); //printing out courses
+       	}
+       	System.out.print("\n::: ");
+       	int courseSelection = in.nextInt();
+        String courseNo = courses.get(courseSelection-1); 
+       	int courseId = PowerSchool.getCourseIdFromCourseNo(courseNo); //courseId
+       	printMarkingPeriods();
+       	int markingPeriod = in.nextInt();//Selected Marking Period
+        	
+       	ArrayList<String> assignments = PowerSchool.getAssignments(courseId, markingPeriod);//get courses by courseId and markingPeriod
+       	if(assignments.isEmpty()) {
+       		System.out.println("\nThere are no assignments here.\n");
+       		hasAssignment = false;
+        }
+        while(hasAssignment) {
+        	System.out.println("\nChoose an assignment.\n");
+        	for(int i = 0; i <= assignments.size()-1; i++) {
+        		System.out.println("[" + (i + 1) + "] " + assignments.get(i) + " (" + PowerSchool.getPointValue(assignments.get(i)) + " pts)");
+        	}
+        	System.out.print("\n::: ");
+        	int assignmentSelection = in.nextInt();
+        	String title = assignments.get(assignmentSelection-1); //title of the assignment
+        	
+        	String StringCourseId = PowerSchool.getCourseIdFromCourseNo2(courseNo);//courseId
+        	ArrayList<String> studentIds = PowerSchool.getStudentId(StringCourseId);//getting studentIds enrolled in a course with courseId
+        	ArrayList<String> students = new ArrayList<String>();
+        	for(int i = 0; i < studentIds.size(); i++) {
+        		students.addAll(PowerSchool.getStudentsByStudentId(studentIds.get(i))); //getting students firstname, lastname, and gpa
+        	}
+        	ArrayList<String> studentsFirstNames = new ArrayList<String>();
+        	for(int i = 0; i < studentIds.size(); i++) {
+        		studentsFirstNames.addAll(PowerSchool.getStudentsFirstNames(studentIds.get(i)));
+        	}
+        	ArrayList<String> studentLastNames = new ArrayList<String>();
+        	for(int i = 0; i < studentIds.size(); i++) {
+        		studentLastNames.addAll(PowerSchool.getStudentsLastNames(studentIds.get(i)));
+        	}
+        	System.out.println("\nChoose a student.\n");
+        	for(int i = 0, x = 1; i < students.size(); i = i + 3) {
+        		System.out.println("[" + (x) + "] " + students.get(i+1) + ", " + students.get(i));
+        		x++;
+        	}
+        	System.out.print("\n::: ");
+        	int studentSelection = in.nextInt();
+        	String studentLastName = studentLastNames.get(studentSelection-1);
+        	String studentFirstName = studentsFirstNames.get(studentSelection-1);
+        	int rows = PowerSchool.assignmentGradesRows();
+        	System.out.println("\nAssignment: " + title + " (" + PowerSchool.getPointValue(title) + " pts)");
+        	System.out.println("Student: " + studentLastName + ", " + studentFirstName);
+        	int assignmentId = PowerSchool.getAssignmentIdFromTitle(title);
+        	int studentId = studentSelection;
+        	if(rows == 0) {
+        		System.out.println("Current Grade: --");
+        	} else {
+        		if(PowerSchool.previousGrade(courseId, assignmentId, studentId) == -1) {
+        			System.out.println("Current Grade: --");
+        		} else {
+        			System.out.println("Current Grade: " + PowerSchool.previousGrade(courseId, assignmentId, studentId));
+        		}
+        	}
+        	System.out.print("\nNew Grade: ");
+        	double pointsEarned = in.nextDouble();
+        	if(pointsEarned < 0 || pointsEarned > PowerSchool.getPointValue(title)) {
+        		while(pointsEarned < 0 || pointsEarned > PowerSchool.getPointValue(title)) {
+        			System.out.print("\nChoose a grade between 0 and the possible number of points.\n\nNew Grade: ");
+                	pointsEarned = in.nextDouble();
+        		}
+        	}
+        	in.nextLine();
+        	System.out.print("\nAre you sure you want to enter this grade? (y/n) ");
+        	String yOn = in.nextLine();
+        	if(yOn.equals("y")) {
+        		if(PowerSchool.checkGrade(courseId, assignmentId, studentId) == -1) {
+        			PowerSchool.addAssignmentGrade(courseId, assignmentId, studentId, pointsEarned, PowerSchool.getPointValue(title), 1);
+            		System.out.println("\nSuccesfully entered grade.\n");
+        		} else if (PowerSchool.checkGrade(courseId, assignmentId, studentId) == 1) {
+        			PowerSchool.updateAssignmentGrade(courseId, assignmentId, studentId, pointsEarned);
+            		System.out.println("\nSuccesfully entered grade.\n");
+        		}
+        	} else {
+        		System.out.println("");
+        	}
+        	hasAssignment = false;
     	}
-    	System.out.print("\n::: ");
-    	int courseSelection = in.nextInt();
-    	String courseNo = courses.get(courseSelection-1);
-    	int courseId = PowerSchool.getCourseIdFromCourseNo(courseNo);
-    	printMarkingPeriods();
-    	int markingPeriod = in.nextInt();
-    	System.out.println("\nChoose an assignment.\n");
-    	ArrayList<String> assignments = PowerSchool.getAssignments(courseId, markingPeriod);
-    	for(int i = 0; i <= assignments.size()-1; i++) {
-    		System.out.println("[" + (i + 1) + "] " + assignments.get(i) + " (" + PowerSchool.getPointValue(assignments.get(i)) + " pts)");
-    	}
-    	System.out.print("\n::: ");
-    	int assignmentSelection = in.nextInt();
-    	String title = assignments.get(assignmentSelection-1);
-    	
-    	String StringCourseId = PowerSchool.getCourseIdFromCourseNo2(courseNo);
-    	ArrayList<String> studentIds = PowerSchool.getStudentId(StringCourseId);
-    	ArrayList<String> students = new ArrayList<String>();
-    	for(int i = 0; i < studentIds.size(); i++) {
-    		students.addAll(PowerSchool.getStudentsByStudentId(studentIds.get(i)));
-    	}
-    	ArrayList<String> studentsFirstNames = new ArrayList<String>();
-    	for(int i = 0; i < studentIds.size(); i++) {
-    		studentsFirstNames.addAll(PowerSchool.getStudentsFirstNames(studentIds.get(i)));
-    	}
-    	ArrayList<String> studentLastNames = new ArrayList<String>();
-    	for(int i = 0; i < studentIds.size(); i++) {
-    		studentLastNames.addAll(PowerSchool.getStudentsLastNames(studentIds.get(i)));
-    	}
-    	System.out.println("\nChoose a student.\n");
-    	for(int i = 0, x = 1; i < students.size(); i = i + 3) {
-    		System.out.println("[" + (x) + "] " + students.get(i+1) + ", " + students.get(i));
-    		x++;
-    	}
-    	System.out.print("\n::: ");
-    	int studentSelection = in.nextInt();
-    	String studentLastName = studentLastNames.get(studentSelection-1);
-    	String studentFirstName = studentsFirstNames.get(studentSelection-1);
-    	System.out.println("\nAssignment: " + title);
-    	System.out.println("Student: " + studentLastName + ", " + studentFirstName);
-    	System.out.println("Current Grade: ");
-    	System.out.print("\nNew Grade: ");
-    	String newGrade = in.nextLine();
-    	in.nextLine();
-    	System.out.print("Are you sure you want to enter this grade? (y/n) ");
-    	String yOn = in.nextLine();
-    	if(yOn.equals("y")) {
-    		System.out.println("Here");
-    	}
-    	
     }
     
     public void assignment() {
@@ -542,7 +678,7 @@ public class Application {
     
     public void changePass(String username, String newPassword) {
     	PowerSchool.updatePassword(username, newPassword);
-    	System.out.println("\nSuccessfully changed password.\n");
+    	System.out.println("\nSuccessfully changed password.");
     }
     
     /**
@@ -591,17 +727,27 @@ public class Application {
      * Releases all resources and kills the application.
      */
 
-    private void shutdown() {        
-        System.out.println();
-            
-        if (Utils.confirm(in, "Are you sure? (y/n) ")) {
-            if (in != null) {
+    private void shutdown() {
+    	in.nextLine();
+        System.out.print("\nAre you sure? (y/n) ");
+        String yesNo = in.nextLine();
+        
+        if(!yesNo.equals("y") && !yesNo.equals("n")) {
+    		System.out.println("\nInvalid selection.\n");
+    		while(!yesNo.equals("y") && !yesNo.equals("n")) {
+    			System.out.print("Are you sure? (y/n) ");
+    	    	yesNo = in.nextLine();
+    		}
+    	} else if (yesNo.equals("y")) {
+    		if (in != null) {
                 in.close();
             }
             
             System.out.println("\nGoodbye!");
             System.exit(0);
-        }
+    	} else if (yesNo.equals("n")) {
+    		System.out.println("");
+    	}
     }
     
     public void printMarkingPeriods() {
