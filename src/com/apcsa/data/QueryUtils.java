@@ -292,5 +292,9 @@ public class QueryUtils {
     				"SET grade = ? " +
     				"WHERE course_id = ?" +
     				"AND student_id = ?";
+    
+    public static final String GET_STUDENT_ID_BY_USER_ID =
+    		"SELECT student_id FROM students " +
+    				"WHERE user_id = ?";
     		
 }

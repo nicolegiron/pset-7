@@ -700,17 +700,19 @@ public class Application {
     	for(int i = 0; i <= grades.size()-1; i++) {
     		System.out.println("[" + (i + 1) + "] " + grades.get(i));
     	}
-    	
+    	System.out.println("\n::: ");
+    	int assignment = in.nextInt();
     }
     
     public void courseGrades() {
     	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
     	ArrayList<String> courses = PowerSchool.getCourseName(activeUser, courseIds);
-    	ArrayList<String> courseGrades = PowerSchool.getCourseGrade(activeUser, courseIds);
+    	ArrayList<String> courseGrades = PowerSchool.getCourseGrade(PowerSchool.getStudentIdByUserId(activeUser), courseIds);
     	System.out.println("");
-    	for(int i = 0; i <= courses.size()-1; i++) {
+    	for(int i = 0; i <= courseGrades.size()-1; i++) {
     		System.out.println((i + 1) + ". " + courses.get(i) + " / " + courseGrades.get(i));
     	}
+    	
     	System.out.println("");
     }
     
