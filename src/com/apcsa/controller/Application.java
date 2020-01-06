@@ -670,6 +670,16 @@ public class Application {
         	} else {
         		System.out.println("");
         	}
+        	ArrayList<Double> grades = new ArrayList<Double>();
+        	grades.add(PowerSchool.getMP1Grade(courseId, studentId));
+        	grades.add(PowerSchool.getMP2Grade(courseId, studentId));
+        	grades.add(PowerSchool.getMP3Grade(courseId, studentId));
+        	grades.add(PowerSchool.getMP4Grade(courseId, studentId));
+        	grades.add(PowerSchool.getMidtermGrade(courseId, studentId));
+        	grades.add(PowerSchool.getFinalGrade(courseId, studentId));
+        	
+        	double grade = Utils.getGrade(grades);
+        	PowerSchool.updateCourseGrade(courseId, studentId, grade);
         	
         	hasAssignment = false;
     	}

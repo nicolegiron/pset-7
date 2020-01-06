@@ -261,5 +261,36 @@ public class QueryUtils {
     public static final String GET_ASSIGNMENT_BY_MP =
     		"SELECT assignment_id FROM assignments " +
     				"WHERE marking_period = ?";
+    
+    public static final String GET_MP1_GRADE = 
+    		"SELECT mp1 FROM course_grades " +
+    				"WHERE course_id = ? " +
+    				"AND student_id = ?";
+    public static final String GET_MP2_GRADE = 
+    		"SELECT mp2 FROM course_grades " +
+    				"WHERE course_id = ? " +
+    				"AND student_id = ?";
+    public static final String GET_MP3_GRADE = 
+    		"SELECT mp3 FROM course_grades " +
+    				"WHERE course_id = ? " +
+    				"AND student_id = ?";
+    public static final String GET_MP4_GRADE = 
+    		"SELECT mp4 FROM course_grades " +
+    				"WHERE course_id = ? " +
+    				"AND student_id = ?";
+    public static final String GET_MIDTERM_GRADE = 
+    		"SELECT midterm_exam FROM course_grades " +
+    				"WHERE course_id = ? " +
+    				"AND student_id = ?";
+    public static final String GET_FINAL_GRADE = 
+    		"SELECT final_exam FROM course_grades " +
+    				"WHERE course_id = ? " +
+    				"AND student_id = ?";
+    
+    public static final String UPDATE_COURSE_GRADE = 
+    		"UPDATE course_grades " +
+    				"SET grade = ? " +
+    				"WHERE course_id = ?" +
+    				"AND student_id = ?";
     		
 }

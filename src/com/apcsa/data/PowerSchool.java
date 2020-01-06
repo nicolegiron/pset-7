@@ -1178,4 +1178,133 @@ public class PowerSchool {
                return -1;
            }
     }
+    
+    public static double getMP1Grade(int courseId, int studentId) {
+    	try (Connection conn = getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MP1_GRADE)) {
+                  
+    		stmt.setInt(1, courseId);
+    		stmt.setInt(2, studentId);
+    		try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("mp1");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+    
+    public static double getMP2Grade(int courseId, int studentId) {
+    	try (Connection conn = getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MP2_GRADE)) {
+                  
+    		stmt.setInt(1, courseId);
+    		stmt.setInt(2, studentId);
+    		try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("mp2");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+    
+    public static double getMP3Grade(int courseId, int studentId) {
+    	try (Connection conn = getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MP3_GRADE)) {
+                  
+    		stmt.setInt(1, courseId);
+    		stmt.setInt(2, studentId);
+    		try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("mp3");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+    
+    public static double getMP4Grade(int courseId, int studentId) {
+    	try (Connection conn = getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MP4_GRADE)) {
+                  
+    		stmt.setInt(1, courseId);
+    		stmt.setInt(2, studentId);
+    		try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("mp4");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+    
+    public static double getMidtermGrade(int courseId, int studentId) {
+    	try (Connection conn = getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MIDTERM_GRADE)) {
+                  
+    		stmt.setInt(1, courseId);
+    		stmt.setInt(2, studentId);
+    		try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("midterm_exam");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+    
+    public static double getFinalGrade(int courseId, int studentId) {
+    	try (Connection conn = getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_FINAL_GRADE)) {
+                  
+    		stmt.setInt(1, courseId);
+    		stmt.setInt(2, studentId);
+    		try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("final_exam");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+    
+    public static int updateCourseGrade(int courseId, int studentId, double grade) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_GRADE)) {
+               
+    		   conn.setAutoCommit(false);
+    		   stmt.setDouble(1, grade);
+               stmt.setInt(2, courseId);
+               stmt.setInt(3, studentId);
+
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+               return -1;
+           }
+    }
 }
