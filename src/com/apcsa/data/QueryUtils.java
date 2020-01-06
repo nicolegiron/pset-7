@@ -253,7 +253,7 @@ public class QueryUtils {
     				"AND student_id = ?";
     
     public static final String GET_GRADES = 
-    		"SELECT points_earned FROM assignment_grades " +
+    		"SELECT points_earned, points_possible FROM assignment_grades " +
     				"WHERE course_id = ? " +
     				"AND assignment_id = ?" + 
     				"AND student_id = ? ";

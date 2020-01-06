@@ -648,9 +648,17 @@ public class Application {
         		for(int i = 0; i < assignmentIds.size(); i++) {
         			grades.addAll(PowerSchool.getGrades(courseId, assignmentIds.get(i),studentId));
         		}
-        		
-        		double average = Utils.getGrade(grades);
-        		
+        		System.out.println(grades);
+        		ArrayList<Double> percent = new ArrayList<Double>();
+        		for(int i = 0; i < grades.size(); i+=2) {
+        			percent.add((grades.get(i)/grades.get(i+1))*100);
+        		}
+        		double total = 0;
+        		for(int i = 0; i < percent.size(); i++) {
+        			total += percent.get(i);
+        		}
+        		double average = total/percent.size();
+        		System.out.println(average);        		
 //        		switch (markingPeriod) {
 //                case 1: PowerSchool.updateCourseGradesMP1(courseId, studentId, average); break;
 //                case 2: PowerSchool.updateCourseGradesMP2(courseId, studentId, average); break;

@@ -1020,6 +1020,7 @@ public class PowerSchool {
      			try (ResultSet rs = stmt.executeQuery()) {
      				while (rs.next()) {
      					totalGrades.add(rs.getDouble("points_earned"));
+     					totalGrades.add(rs.getDouble("points_possible"));
      				}
      			}	
      		return totalGrades;

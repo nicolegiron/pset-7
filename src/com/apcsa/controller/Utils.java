@@ -172,10 +172,7 @@ public class Utils {
             examWeight = 1.0;
         } else {
             return null;
-        }
-        System.out.println(mps);
-        System.out.println(mpWeight);
-        System.out.println(mps*mpWeight);                
+        }               
         return round(mpAvg * mpWeight + examAvg * examWeight, 2);
     }
     
