@@ -376,20 +376,19 @@ public class PowerSchool {
      	return courses;
      }
     
-    public static ArrayList<String> getAssignmentTitle(int assignmentSelection, ArrayList<Integer> courseIds) {
+    public static ArrayList<String> getAssignmentTitle(int courseId, int markingPeriod) {
     	ArrayList<String> title = new ArrayList<String>();
      	try (Connection conn = getConnection();
      			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_TITLE)) {
-     			for(int i = 0; i <= courseIds.size()-1; i++) {
-     				stmt.setInt(1, courseIds.get(i));
+     			
+     				stmt.setInt(1, courseId);
+     				stmt.setInt(2, markingPeriod);
      				
      				try (ResultSet rs = stmt.executeQuery()) {
      					while (rs.next()) {
-                  		   String result = rs.getString("title");
-                  		 title.add(result);
+                  		 title.add(rs.getString("title"));
      					}
      				}
-     			}
      			return title;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -685,25 +685,6 @@ public class Application {
     	}
     }
     
-    public void assignment() {
-    	System.out.println("\nChoose a course.\n");
-    	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
-    	ArrayList<String> courses = PowerSchool.getCourseNumber(activeUser, courseIds);
-    	for(int i = 0; i <= courses.size()-1; i++) {
-    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
-    	}
-    	int courseSelection = in.nextInt();
-    	printMarkingPeriods();
-    	int assignmentSelection = in.nextInt();
-    	ArrayList<String> grades = PowerSchool.getAssignmentTitle(assignmentSelection, courseIds);
-    	System.out.println("");
-    	for(int i = 0; i <= grades.size()-1; i++) {
-    		System.out.println("[" + (i + 1) + "] " + grades.get(i));
-    	}
-    	System.out.println("\n::: ");
-    	int assignment = in.nextInt();
-    }
-    
     public void courseGrades() {
     	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
     	ArrayList<String> courses = PowerSchool.getCourseName(activeUser, courseIds);
@@ -712,8 +693,50 @@ public class Application {
     	for(int i = 0; i <= courseGrades.size()-1; i++) {
     		System.out.println((i + 1) + ". " + courses.get(i) + " / " + courseGrades.get(i));
     	}
-    	
     	System.out.println("");
+    }
+    
+    public void assignment() {
+    	System.out.println("\nChoose a course.\n");
+    	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
+    	ArrayList<String> courses = PowerSchool.getCourseNumber(activeUser, courseIds);
+    	for(int i = 0; i <= courses.size()-1; i++) {
+    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+    	}
+    	System.out.print("\n::: ");
+    	int courseSelection = in.nextInt();
+    	if(courseSelection < 1 || courseSelection > courses.size()) {
+    		while(courseSelection < 1 || courseSelection > courses.size()) {
+    			System.out.println("\nInvalid selection.\n");
+    			System.out.println("Choose a course.\n");
+    			for(int i = 0; i <= courses.size()-1; i++) {
+    	    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+    	    	}
+    	    	System.out.print("\n::: ");
+    	    	courseSelection = in.nextInt();
+    		}
+    	}
+    	int courseId = courseIds.get(courseSelection-1);
+    	printMarkingPeriods();
+    	int markingPeriod = in.nextInt();
+    	if(markingPeriod < 1 || markingPeriod > 6) {
+    		while(markingPeriod < 1 || markingPeriod > 6) {
+    			System.out.println("\nInvalid selection.");
+    			printMarkingPeriods();
+    	    	markingPeriod = in.nextInt();
+    		}
+    	}
+
+    	ArrayList<String> titles = PowerSchool.getAssignmentTitle(courseId, markingPeriod);
+    	if(titles.isEmpty()) {
+    		System.out.println("\nThere are no assignments in this class and marking period.\n");
+    	} else {
+    		System.out.println("");
+    		for(int i = 0; i <= titles.size()-1; i++) {
+        		System.out.println((i + 1) + ". " + titles.get(i) + " / " + "(out of " + PowerSchool.getPointValue(titles.get(i)) + " pts)");
+        	}
+        	System.out.println("");
+    	}
     }
     
     public void changePass(String username, String newPassword) {
