@@ -1053,16 +1053,14 @@ public class PowerSchool {
            	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MP1)) {
                
     		   conn.setAutoCommit(false);
-               stmt.setInt(1, courseId);
-               stmt.setInt(2, studentId);
-               stmt.setDouble(3, average);
+               stmt.setDouble(1, average);
+               stmt.setInt(2, courseId);
+               stmt.setInt(3, studentId);
 
                if (stmt.executeUpdate() == 1) {
-            	   System.out.println("\ncommit\n");
                    conn.commit();
                    return 1;
                } else {
-            	   System.out.println("\ndidnt commit\n");
                    conn.rollback();
                    return -1;
                }
@@ -1071,14 +1069,14 @@ public class PowerSchool {
            }
     }
     
-    public static int updateCourseGradesMP2(int courseId, int studentId, double grade) {
+    public static int updateCourseGradesMP2(int courseId, int studentId, double average) {
     	try (Connection conn = getConnection();
            	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MP2)) {
                
     		   conn.setAutoCommit(false);
-               stmt.setInt(1, courseId);
-               stmt.setInt(2, studentId);
-               stmt.setDouble(3, grade);
+    		   stmt.setDouble(1, average);
+               stmt.setInt(2, courseId);
+               stmt.setInt(3, studentId);
 
                if (stmt.executeUpdate() == 1) {
                    conn.commit();
@@ -1093,14 +1091,14 @@ public class PowerSchool {
            }
     }
     
-    public static int updateCourseGradesMP3(int courseId, int studentId, double grade) {
+    public static int updateCourseGradesMP3(int courseId, int studentId, double average) {
     	try (Connection conn = getConnection();
            	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MP3)) {
                
     		   conn.setAutoCommit(false);
-               stmt.setInt(1, courseId);
-               stmt.setInt(2, studentId);
-               stmt.setDouble(3, grade);
+    		   stmt.setDouble(1, average);
+               stmt.setInt(2, courseId);
+               stmt.setInt(3, studentId);
 
                if (stmt.executeUpdate() == 1) {
                    conn.commit();
@@ -1115,14 +1113,14 @@ public class PowerSchool {
            }
     }
     
-    public static int updateCourseGradesMP4(int courseId, int studentId, double grade) {
+    public static int updateCourseGradesMP4(int courseId, int studentId, double average) {
     	try (Connection conn = getConnection();
            	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MP4)) {
                
     		   conn.setAutoCommit(false);
-               stmt.setInt(1, courseId);
-               stmt.setInt(2, studentId);
-               stmt.setDouble(3, grade);
+    		   stmt.setDouble(1, average);
+               stmt.setInt(2, courseId);
+               stmt.setInt(3, studentId);
 
                if (stmt.executeUpdate() == 1) {
                    conn.commit();
@@ -1137,14 +1135,14 @@ public class PowerSchool {
            }
     }
     
-    public static int updateCourseGradesMidterm(int courseId, int studentId, double grade) {
+    public static int updateCourseGradesMidterm(int courseId, int studentId, double average) {
     	try (Connection conn = getConnection();
            	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MIDTERM)) {
                
     		   conn.setAutoCommit(false);
-               stmt.setInt(1, courseId);
-               stmt.setInt(2, studentId);
-               stmt.setDouble(3, grade);
+    		   stmt.setDouble(1, average);
+               stmt.setInt(2, courseId);
+               stmt.setInt(3, studentId);
 
                if (stmt.executeUpdate() == 1) {
                    conn.commit();
@@ -1159,14 +1157,14 @@ public class PowerSchool {
            }
     }
     
-    public static int updateCourseGradesFinal(int courseId, int studentId, double grade) {
+    public static int updateCourseGradesFinal(int courseId, int studentId, double average) {
     	try (Connection conn = getConnection();
            	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_FINAL)) {
                
     		   conn.setAutoCommit(false);
-               stmt.setInt(1, courseId);
-               stmt.setInt(2, studentId);
-               stmt.setDouble(3, grade);
+    		   stmt.setDouble(1, average);
+               stmt.setInt(2, courseId);
+               stmt.setInt(3, studentId);
 
                if (stmt.executeUpdate() == 1) {
                    conn.commit();

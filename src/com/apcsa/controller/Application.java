@@ -630,7 +630,7 @@ public class Application {
         		}
         	}
         	in.nextLine();
-        	System.out.print("\nAre you sure you want to enter this grade? (y/n) ");
+        	System.out.print("Are you sure you want to enter this grade? (y/n) ");
         	String yOn = in.nextLine();
         	
         	
