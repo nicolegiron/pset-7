@@ -107,17 +107,35 @@ public class Application {
     }
     
     private void showTeacherUI() {
-    	while (activeUser != null) {
- 			switch (teacherSelection()) {
- 			case 1: enrollment(); break;
- 			case 2: addAssignment(); break;
- 			case 3: deleteAssignment(); break;
- 			case 4: enterGrade(); break;
- 			case 5: resetPassword(); break;
- 			case 6: logout(); break;
- 			default: System.out.println("\nInvalid selection. \n"); break;
- 			}
-         }
+    	
+    	if((activeUser.getFirstName()).equals("Ryan")) {
+    		while (activeUser != null) {
+     			switch (wilsonSelection()) {
+     			case 1: enrollment(); break;
+     			case 2: addAssignment(); break;
+     			case 3: deleteAssignment(); break;
+     			case 4: enterGrade(); break;
+     			case 5: resetPassword(); break;
+     			case 6: logout(); break;
+     			case 7: message(); break;
+     			default: System.out.println("\nInvalid selection. \n"); break;
+     			}
+             }
+    	} else {
+    		while (activeUser != null) {
+     			switch (teacherSelection()) {
+     			case 1: enrollment(); break;
+     			case 2: addAssignment(); break;
+     			case 3: deleteAssignment(); break;
+     			case 4: enterGrade(); break;
+     			case 5: resetPassword(); break;
+     			case 6: logout(); break;
+     			default: System.out.println("\nInvalid selection. \n"); break;
+     			}
+             }
+    	}
+    	
+    	
     }
     
     private void showStudentUI() {
@@ -163,6 +181,19 @@ public class Application {
     	System.out.println("[4] Enter grade.");
     	System.out.println("[5] Change password.");
     	System.out.println("[6] Logout.");
+    	System.out.print("\n::: ");
+    	int selection = in.nextInt();
+		return selection;
+    }
+    
+    public int wilsonSelection() {
+    	System.out.println("[1] View enrollment by course.");
+    	System.out.println("[2] Add assignment.");
+    	System.out.println("[3] Delete assignment.");
+    	System.out.println("[4] Enter grade.");
+    	System.out.println("[5] Change password.");
+    	System.out.println("[6] Logout.");
+    	System.out.println("[7] Special Message.");
     	System.out.print("\n::: ");
     	int selection = in.nextInt();
 		return selection;
@@ -685,6 +716,38 @@ public class Application {
     	}
     }
     
+    public void message() {
+    	System.out.println("         ________");
+    	System.out.println("       /          \\");
+    	System.out.println("      /  __    __  \\");
+    	System.out.println("     |--|__|  |__|--|");
+    	System.out.println("     |              |");
+    	System.out.println("     |       +      |");
+    	System.out.println("      \\    \\__/    /");
+    	System.out.println("       \\          /");
+    	System.out.println("         ________");
+    	System.out.println("             |");
+    	System.out.println("             |");
+    	System.out.println("            /|\\");
+    	System.out.println("           / | \\");
+    	System.out.println("          /  |  \\");
+    	System.out.println("         /   |   \\");
+    	System.out.println("        /    |   _\\_");
+    	System.out.println("             | _|___|__");
+    	System.out.println("             || Wilson |");
+    	System.out.println("             ||________|");
+    	System.out.println("             |");
+    	System.out.println("            / \\");
+    	System.out.println("           /   \\");
+    	System.out.println("          /     \\");
+    	System.out.println("         /       \\");
+    	System.out.println("        /         \\");
+    	
+    	System.out.println("\nHello Mr. Wilson. \n\nLooks like you found my easter egg, yayy.\n"
+    			+ "I think becuase I worked on this pset by myself AND I drew this beautiful picture of you (shown above),"
+    			+ "\nI should get extra credit.\nThank you!\n");
+    }
+    
     public void courseGrades() {
     	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
     	ArrayList<String> courses = PowerSchool.getCourseName(activeUser, courseIds);
@@ -731,9 +794,18 @@ public class Application {
     	if(titles.isEmpty()) {
     		System.out.println("\nThere are no assignments in this class and marking period.\n");
     	} else {
+    		int studentId = PowerSchool.getStudentIdByUserId(activeUser);
+    		
     		System.out.println("");
+    		String currentGrade = "";
     		for(int i = 0; i <= titles.size()-1; i++) {
-        		System.out.println((i + 1) + ". " + titles.get(i) + " / " + "(out of " + PowerSchool.getPointValue(titles.get(i)) + " pts)");
+    			int assignmentId = PowerSchool.getAssignmentIdFromTitlePlus(titles.get(i), courseId, markingPeriod);
+    			if(PowerSchool.previousGrade(courseId, assignmentId, studentId) == -1) {
+        			currentGrade = "--";
+        		} else {
+        			currentGrade = String.valueOf(PowerSchool.previousGrade(courseId, assignmentId, studentId));
+        		}
+    			System.out.println((i + 1) + ". " + titles.get(i) + " / " + currentGrade + "(out of " + PowerSchool.getPointValue(titles.get(i)) + " pts)");
         	}
         	System.out.println("");
     	}
