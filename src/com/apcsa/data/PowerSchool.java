@@ -914,12 +914,14 @@ public class PowerSchool {
            }
     }
     
-    public static int getAssignmentIdFromTitle(String title) {
+    public static int getAssignmentIdFromTitlePlus(String title, int courseId, int markingPeriod) {
     	try (Connection conn = getConnection();
-     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_ID_FROM_TITLE)) {
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_ID_FROM_TITLE_PLUS)) {
      			
     			stmt.setString(1,  title);
-     			try (ResultSet rs = stmt.executeQuery()) {
+    			stmt.setInt(2,  courseId);
+    			stmt.setInt(3,  markingPeriod);
+    			try (ResultSet rs = stmt.executeQuery()) {
      				while (rs.next()) {
      					return rs.getInt("assignment_id");
      				}
@@ -1007,16 +1009,17 @@ public class PowerSchool {
            }
     }
     
-    public static ArrayList<String> getGrades(int courseId, int studentId) {
-    	ArrayList<String> totalGrades = new ArrayList<String>();
+    public static ArrayList<Double> getGrades(int courseId, int assignmentId, int studentId) {
+    	ArrayList<Double> totalGrades = new ArrayList<Double>();
     	try (Connection conn = getConnection();
      			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_GRADES)) {
      			
     			stmt.setInt(1,  courseId);
-    			stmt.setInt(1,  studentId);
+    			stmt.setInt(2,  assignmentId);
+    			stmt.setInt(3,  studentId);
      			try (ResultSet rs = stmt.executeQuery()) {
      				while (rs.next()) {
-     					totalGrades.add(rs.getString("points_earned"));
+     					totalGrades.add(rs.getDouble("points_earned"));
      				}
      			}	
      		return totalGrades;
@@ -1026,15 +1029,55 @@ public class PowerSchool {
      	return totalGrades;
     }
     
-    public static int updateCourseGrades(int courseId, int studentId, int grade) {
+    public static ArrayList<Integer> getAssignmentIdByMP(int markingPeriod) {
+    	ArrayList<Integer> assignments = new ArrayList<Integer>();
     	try (Connection conn = getConnection();
-           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_GRADES)) {
+     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_BY_MP)) {
+     			
+    			stmt.setInt(1,  markingPeriod);
+     			try (ResultSet rs = stmt.executeQuery()) {
+     				while (rs.next()) {
+     					assignments.add(rs.getInt("assignment_id"));
+     				}
+     			}	
+     		return assignments;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     	return assignments;
+    }
+    
+    public static int updateCourseGradesMP1(int courseId, int studentId, double grade) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MP1)) {
                
     		   conn.setAutoCommit(false);
-    		   stmt.setInt(1, pointsEarned);
-               stmt.setInt(2, courseId);
-               stmt.setInt(3, studentId);
-               stmt.setInt(4, grade);
+               stmt.setInt(1, courseId);
+               stmt.setInt(2, studentId);
+               stmt.setDouble(3, grade);
+
+               if (stmt.executeUpdate() == 1) {
+            	   System.out.println("\ncommit\n");
+                   conn.commit();
+                   return 1;
+               } else {
+            	   System.out.println("\ndidnt commit\n");
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+               return -1;
+           }
+    }
+    
+    public static int updateCourseGradesMP2(int courseId, int studentId, double grade) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MP2)) {
+               
+    		   conn.setAutoCommit(false);
+               stmt.setInt(1, courseId);
+               stmt.setInt(2, studentId);
+               stmt.setDouble(3, grade);
 
                if (stmt.executeUpdate() == 1) {
                    conn.commit();
@@ -1044,6 +1087,95 @@ public class PowerSchool {
                    return -1;
                }
            } catch (SQLException e) {
+        	   System.out.println("\nsql error\n");
+               return -1;
+           }
+    }
+    
+    public static int updateCourseGradesMP3(int courseId, int studentId, double grade) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MP3)) {
+               
+    		   conn.setAutoCommit(false);
+               stmt.setInt(1, courseId);
+               stmt.setInt(2, studentId);
+               stmt.setDouble(3, grade);
+
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+        	   System.out.println("\nsql error\n");
+               return -1;
+           }
+    }
+    
+    public static int updateCourseGradesMP4(int courseId, int studentId, double grade) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MP4)) {
+               
+    		   conn.setAutoCommit(false);
+               stmt.setInt(1, courseId);
+               stmt.setInt(2, studentId);
+               stmt.setDouble(3, grade);
+
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+        	   System.out.println("\nsql error\n");
+               return -1;
+           }
+    }
+    
+    public static int updateCourseGradesMidterm(int courseId, int studentId, double grade) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MIDTERM)) {
+               
+    		   conn.setAutoCommit(false);
+               stmt.setInt(1, courseId);
+               stmt.setInt(2, studentId);
+               stmt.setDouble(3, grade);
+
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+        	   System.out.println("\nsql error\n");
+               return -1;
+           }
+    }
+    
+    public static int updateCourseGradesFinal(int courseId, int studentId, double grade) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_FINAL)) {
+               
+    		   conn.setAutoCommit(false);
+               stmt.setInt(1, courseId);
+               stmt.setInt(2, studentId);
+               stmt.setDouble(3, grade);
+
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+        	   System.out.println("\nsql error\n");
                return -1;
            }
     }

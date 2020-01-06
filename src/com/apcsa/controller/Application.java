@@ -546,7 +546,7 @@ public class Application {
         		}
         	} else if (yesNo.equals("y")) {
         		PowerSchool.deleteAssignment(courseId, markingPeriod, title);
-        		PowerSchool.deleteAssignmentGrade(PowerSchool.getAssignmentIdFromTitle(title));
+        		PowerSchool.deleteAssignmentGrade(PowerSchool.getAssignmentIdFromTitlePlus(title, courseId, markingPeriod));
                 System.out.println("\nSuccessfully deleted " + title + ".\n");
         	} else {
         		System.out.println("");
@@ -610,7 +610,7 @@ public class Application {
         	int rows = PowerSchool.assignmentGradesRows();
         	System.out.println("\nAssignment: " + title + " (" + PowerSchool.getPointValue(title) + " pts)");
         	System.out.println("Student: " + studentLastName + ", " + studentFirstName);
-        	int assignmentId = PowerSchool.getAssignmentIdFromTitle(title);
+        	int assignmentId = PowerSchool.getAssignmentIdFromTitlePlus(title, courseId, markingPeriod);
         	int studentId = studentSelection;
         	if(rows == 0) {
         		System.out.println("Current Grade: --");
@@ -632,6 +632,8 @@ public class Application {
         	in.nextLine();
         	System.out.print("\nAre you sure you want to enter this grade? (y/n) ");
         	String yOn = in.nextLine();
+        	
+        	
         	if(yOn.equals("y")) {
         		if(PowerSchool.checkGrade(courseId, assignmentId, studentId) == -1) {
         			PowerSchool.addAssignmentGrade(courseId, assignmentId, studentId, pointsEarned, PowerSchool.getPointValue(title), 1);
@@ -640,9 +642,33 @@ public class Application {
         			PowerSchool.updateAssignmentGrade(courseId, assignmentId, studentId, pointsEarned);
             		System.out.println("\nSuccesfully entered grade.\n");
         		}
+        		ArrayList<Integer> assignmentIds = PowerSchool.getAssignmentIdByMP(markingPeriod);
+        		ArrayList<Double> grades = new ArrayList<Double>();
+        		
+        		for(int i = 0; i < assignmentIds.size(); i++) {
+        			grades.addAll(PowerSchool.getGrades(courseId, assignmentIds.get(i),studentId));
+        		}
+        		
+        		double average = Utils.getGrade(grades);
+        		System.out.println(average);
+        		
+//        		switch (markingPeriod) {
+//                case 1: PowerSchool.updateCourseGradesMP1(courseId, studentId, average); break;
+//                case 2: PowerSchool.updateCourseGradesMP2(courseId, studentId, average); break;
+//                case 3: PowerSchool.updateCourseGradesMP3(courseId, studentId, average); break;
+//                case 4: PowerSchool.updateCourseGradesMP4(courseId, studentId, average); break;
+//                case 5: PowerSchool.updateCourseGradesMidterm(courseId, studentId, average); break;
+//                case 6: PowerSchool.updateCourseGradesFinal(courseId, studentId, average); break;
+//                default: System.out.println("\nInvalid selection.\n"); break;
+//            	}
+//        		System.out.println(courseId);
+//        		System.out.println(studentId);
+//        		System.out.println(average);
+        		
         	} else {
         		System.out.println("");
         	}
+        	
         	hasAssignment = false;
     	}
     }

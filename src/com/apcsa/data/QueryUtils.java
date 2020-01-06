@@ -188,9 +188,11 @@ public class QueryUtils {
             "INSERT INTO assignment_grades " +
                 "VALUES(?, ?, ?, ?, ?, ?)";
     
-    public static final String GET_ASSIGNMENT_ID_FROM_TITLE =
+    public static final String GET_ASSIGNMENT_ID_FROM_TITLE_PLUS =
     		"SELECT assignment_id FROM assignments " +
-    				"WHERE title = ?";
+    				"WHERE title = ?" +
+    				"AND course_id = ?" +
+    				"AND marking_period = ?";
     
     public static final String ROWS_IN_ASSIGNMENT_GRADES =
     		"SELECT count(*) FROM assignment_grades ";
@@ -214,15 +216,50 @@ public class QueryUtils {
     				"AND assignment_id = ?" +
     				"AND student_id = ?";
     
-    public static final String UPDATE_COURSE_GRADES = 
+    public static final String UPDATE_COURSE_MP1 = 
     		"UPDATE course_grades " +
-    				"SET ? = ? " +
+    				"SET mp1 = ? " +
+    				"WHERE course_id = ?" +
+    				"AND student_id = ?";
+    
+    public static final String UPDATE_COURSE_MP2 = 
+    		"UPDATE course_grades " +
+    				"SET mp2 = ? " +
+    				"WHERE course_id = ?" +
+    				"AND student_id = ?";
+    
+    public static final String UPDATE_COURSE_MP3 = 
+    		"UPDATE course_grades " +
+    				"SET mp3 = ? " +
+    				"WHERE course_id = ?" +
+    				"AND student_id = ?";
+    
+    public static final String UPDATE_COURSE_MP4 = 
+    		"UPDATE course_grades " +
+    				"SET mp4 = ? " +
+    				"WHERE course_id = ?" +
+    				"AND student_id = ?";
+    
+    public static final String UPDATE_COURSE_MIDTERM = 
+    		"UPDATE course_grades " +
+    				"SET midterm_exam = ? " +
+    				"WHERE course_id = ?" +
+    				"AND student_id = ?";
+    
+    public static final String UPDATE_COURSE_FINAL = 
+    		"UPDATE course_grades " +
+    				"SET final_exam = ? " +
     				"WHERE course_id = ?" +
     				"AND student_id = ?";
     
     public static final String GET_GRADES = 
     		"SELECT points_earned FROM assignment_grades " +
     				"WHERE course_id = ? " +
-    				"AND student_id = ?";
+    				"AND assignment_id = ?" + 
+    				"AND student_id = ? ";
+    
+    public static final String GET_ASSIGNMENT_BY_MP =
+    		"SELECT assignment_id FROM assignments " +
+    				"WHERE marking_period = ?";
     		
 }
