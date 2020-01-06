@@ -219,7 +219,7 @@ public class QueryUtils {
     public static final String UPDATE_COURSE_MP1 = 
     		"UPDATE course_grades " +
     				"SET mp1 = ? " +
-    				"WHERE course_id = ?" +
+    				"WHERE course_id = ? " +
     				"AND student_id = ?";
     
     public static final String UPDATE_COURSE_MP2 = 

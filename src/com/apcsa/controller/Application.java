@@ -648,7 +648,6 @@ public class Application {
         		for(int i = 0; i < assignmentIds.size(); i++) {
         			grades.addAll(PowerSchool.getGrades(courseId, assignmentIds.get(i),studentId));
         		}
-        		System.out.println(grades);
         		ArrayList<Double> percent = new ArrayList<Double>();
         		for(int i = 0; i < grades.size(); i+=2) {
         			percent.add((grades.get(i)/grades.get(i+1))*100);
@@ -657,20 +656,16 @@ public class Application {
         		for(int i = 0; i < percent.size(); i++) {
         			total += percent.get(i);
         		}
-        		double average = total/percent.size();
-        		System.out.println(average);        		
-//        		switch (markingPeriod) {
-//                case 1: PowerSchool.updateCourseGradesMP1(courseId, studentId, average); break;
-//                case 2: PowerSchool.updateCourseGradesMP2(courseId, studentId, average); break;
-//                case 3: PowerSchool.updateCourseGradesMP3(courseId, studentId, average); break;
-//                case 4: PowerSchool.updateCourseGradesMP4(courseId, studentId, average); break;
-//                case 5: PowerSchool.updateCourseGradesMidterm(courseId, studentId, average); break;
-//                case 6: PowerSchool.updateCourseGradesFinal(courseId, studentId, average); break;
-//                default: System.out.println("\nInvalid selection.\n"); break;
-//            	}
-//        		System.out.println(courseId);
-//        		System.out.println(studentId);
-//        		System.out.println(average);
+        		double average = total/percent.size();      		
+        		switch (markingPeriod) {
+                case 1: PowerSchool.updateCourseGradesMP1(courseId, studentId, average); break;
+                case 2: PowerSchool.updateCourseGradesMP2(courseId, studentId, average); break;
+                case 3: PowerSchool.updateCourseGradesMP3(courseId, studentId, average); break;
+                case 4: PowerSchool.updateCourseGradesMP4(courseId, studentId, average); break;
+                case 5: PowerSchool.updateCourseGradesMidterm(courseId, studentId, average); break;
+                case 6: PowerSchool.updateCourseGradesFinal(courseId, studentId, average); break;
+                default: System.out.println("\nInvalid selection.\n"); break;
+            	}
         		
         	} else {
         		System.out.println("");

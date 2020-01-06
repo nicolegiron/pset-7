@@ -1048,14 +1048,14 @@ public class PowerSchool {
      	return assignments;
     }
     
-    public static int updateCourseGradesMP1(int courseId, int studentId, double grade) {
+    public static int updateCourseGradesMP1(int courseId, int studentId, double average) {
     	try (Connection conn = getConnection();
            	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_COURSE_MP1)) {
                
     		   conn.setAutoCommit(false);
                stmt.setInt(1, courseId);
                stmt.setInt(2, studentId);
-               stmt.setDouble(3, grade);
+               stmt.setDouble(3, average);
 
                if (stmt.executeUpdate() == 1) {
             	   System.out.println("\ncommit\n");
