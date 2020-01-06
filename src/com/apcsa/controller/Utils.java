@@ -143,11 +143,9 @@ public class Utils {
         for (int i = 0; i < grades.size(); i++) {
             if (grades.get(i) != null) {
                 if (i < 2 || (i > 2 && i < 5)) {        // marking period grade
-                	System.out.println("\nMARKING PERIOD GRADE\n");
                     mps++;
                     mpSum = mpSum + grades.get(i);
                 } else {                                // midterm or final exam grade
-                	System.out.println("\nOTHER PERIOD GRADE\n");
                     exams++;
                     examSum = examSum + grades.get(i);
                 }
@@ -175,7 +173,9 @@ public class Utils {
         } else {
             return null;
         }
-                                
+        System.out.println(mps);
+        System.out.println(mpWeight);
+        System.out.println(mps*mpWeight);                
         return round(mpAvg * mpWeight + examAvg * examWeight, 2);
     }
     

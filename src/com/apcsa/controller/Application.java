@@ -650,7 +650,6 @@ public class Application {
         		}
         		
         		double average = Utils.getGrade(grades);
-        		System.out.println(average);
         		
 //        		switch (markingPeriod) {
 //                case 1: PowerSchool.updateCourseGradesMP1(courseId, studentId, average); break;
