@@ -209,45 +209,73 @@ public class Application {
 		return selection;
     }
     
-    private void logout() {
-    	in.nextLine();
-    	System.out.print("\nAre you sure you want to logout? (y/n) ");
-    	String logout = in.nextLine();
-    	if(!logout.equals("y") && !logout.equals("n")) {
-    		while(!logout.equals("y") && !logout.equals("n")) {
-    			System.out.println("\nInvalid selection.");
-    			System.out.print("\nAre you sure you want to logout? (y/n) ");
-    	    	logout = in.nextLine();
+    private int checkYesNo(String yesNo, String wantTo) {
+    	if(!yesNo.equals("y") && !yesNo.equals("n")) {
+    		while(!yesNo.equals("y") && !yesNo.equals("n")) {
+    			System.out.println("\nInvalid selection.\n");
+    			System.out.print("Are you sure " + wantTo +" (y/n) ");
+    			yesNo = in.nextLine();
+    			yesNo = yesNo.toLowerCase();
     		}
-    	} else if (logout.equals("y")) {
-    		activeUser = null;
-    	} else if (logout.equals("n")){
-    		System.out.println("");
+    		if((yesNo.equals("n"))) {
+    			return -1;
+    		} else if (yesNo.equals("y")) {
+    			return 1;
+    		}
+    	} else if (yesNo.equals("n")) {
+    		return -1;
+    	} else if (yesNo.equals("y")) {
+    		return 1;
     	}
-    }
-    
-    private void factoryReset() {
-    	in.nextLine();
-    	System.out.print("\nAre you sure you want to reset all settings and data? (y/n) ");
-    	String reset = in.nextLine();
-    	if(reset.equals("y")) {
-    		PowerSchool.initialize(true);
-    		System.out.println("\nSuccessfully reset database.\n");
-    	}
+		return 0;
     }
     
     public void rootResetPassword() {
     	in.nextLine();
     	System.out.print("\nUsername: ");
     	String username = in.nextLine();
+    	String wantTo = "you want to reset the password for " + username + "?";
     	System.out.print("Are you sure you want to reset the password for " + username + "? (y/n) ");
-    	String yOn = in.nextLine();
-    	yOn = yOn.toLowerCase();
-    	if (yOn.equals("y")) {
-    		int worked = PowerSchool.updatePasswordAndTime(username);
-    		if(worked == 1) {
-    			System.out.println("\nSuccessfully reset password for " + username + ".\n");
-    		}
+    	String yesNo = in.nextLine(); 	
+    	yesNo = yesNo.toLowerCase();
+    	int checked = checkYesNo(yesNo, wantTo);
+    	
+    	if(checked == -1) {
+			System.out.println("");
+    	} else if (checked == 1) {
+    		PowerSchool.updatePasswordAndTime(username);
+    		System.out.println("\nSuccessfully reset password for " + username + ".\n");
+    	}
+    }
+    
+    private void logout() {
+    	in.nextLine();
+    	String wantTo = "you want to logout?";
+    	System.out.print("\nAre you sure you want to logout? (y/n) ");
+    	String yesNo = in.nextLine();
+    	yesNo = yesNo.toLowerCase();
+    	int checked = checkYesNo(yesNo, wantTo);
+    	
+    	if(checked == -1) {
+			System.out.println("");
+    	} else if (checked == 1) {
+    		activeUser = null;
+    	}
+    }
+    
+    private void factoryReset() {
+    	in.nextLine();
+    	String wantTo = "you want to reset all settings and data?";
+    	System.out.print("\nAre you sure you want to reset all settings and data? (y/n) ");
+    	String yesNo = in.nextLine();
+    	yesNo = yesNo.toLowerCase();
+    	int checked = checkYesNo(yesNo, wantTo);
+    	
+    	if(checked == -1) {
+			System.out.println("");
+    	} else if (checked == 1) {
+    		PowerSchool.initialize(true);
+			System.out.println("\nSuccessfully reset database.\n");
     	}
     }
     
@@ -481,15 +509,15 @@ public class Application {
 		}
     	int assignmentId = 0;
     	in.nextLine();
+    	String wantTo = "you want to create this assignment?";
     	System.out.print("Are you sure you want to create this assignment? (y/n) ");
     	String yesNo = in.nextLine();
-    	if(!yesNo.equals("y") && !yesNo.equals("n")) {
-    		System.out.println("\nInvalid selection.\n");
-    		while(!yesNo.equals("y") && !yesNo.equals("n")) {
-    			System.out.print("Are you sure you want to create this assignment? (y/n) ");
-    	    	yesNo = in.nextLine();
-    		}
-    	} else if (yesNo.equals("y")) {
+    	yesNo = yesNo.toLowerCase();
+    	int checked = checkYesNo(yesNo, wantTo);
+    	
+    	if(checked == -1) {
+			System.out.println("");
+    	} else if (checked == 1) {
     		int rows = PowerSchool.assignmentRows();
     		if(rows == 0) {
     			assignmentId = 1;
@@ -500,10 +528,7 @@ public class Application {
     		}
     		PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
     		System.out.println("\nSuccessfully created assignment.\n");
-    	} else {
-    		System.out.println("");
     	}
-    	
     }
     
     public void deleteAssignment() {
@@ -566,21 +591,18 @@ public class Application {
         	
         	String title = assignments.get(assignmentSelection-1);
         	in.nextLine();
+        	String wantTo = "you want to delete this assignment?";
         	System.out.print("\nAre you sure you want to delete this assignment? (y/n) ");
         	String yesNo = in.nextLine();
+        	yesNo = yesNo.toLowerCase();
+        	int checked = checkYesNo(yesNo, wantTo);
         	
-        	if(!yesNo.equals("y") && !yesNo.equals("n")) {
-        		System.out.println("\nInvalid selection.\n");
-        		while(!yesNo.equals("y") && !yesNo.equals("n")) {
-        			System.out.print("Are you sure you want to delete this assignment? (y/n) ");
-        	    	yesNo = in.nextLine();
-        		}
-        	} else if (yesNo.equals("y")) {
+        	if(checked == -1) {
+    			System.out.println("");
+        	} else if (checked == 1) {
         		PowerSchool.deleteAssignment(courseId, markingPeriod, title);
         		PowerSchool.deleteAssignmentGrade(PowerSchool.getAssignmentIdFromTitlePlus(title, courseId, markingPeriod));
                 System.out.println("\nSuccessfully deleted " + title + ".\n");
-        	} else {
-        		System.out.println("");
         	}
         	hasAssignment = false;
         }
@@ -661,11 +683,15 @@ public class Application {
         		}
         	}
         	in.nextLine();
+        	String wantTo = "you want to enter this grade?";
         	System.out.print("Are you sure you want to enter this grade? (y/n) ");
-        	String yOn = in.nextLine();
+        	String yesNo = in.nextLine();
+        	yesNo = yesNo.toLowerCase();
+        	int checked = checkYesNo(yesNo, wantTo);
         	
-        	
-        	if(yOn.equals("y")) {
+        	if(checked == -1) {
+    			System.out.println("");
+        	} else if (checked == 1) {
         		if(PowerSchool.checkGrade(courseId, assignmentId, studentId) == -1) {
         			PowerSchool.addAssignmentGrade(courseId, assignmentId, studentId, pointsEarned, PowerSchool.getPointValue(title), 1);
             		System.out.println("\nSuccesfully entered grade.\n");
@@ -697,9 +723,6 @@ public class Application {
                 case 6: PowerSchool.updateCourseGradesFinal(courseId, studentId, average); break;
                 default: System.out.println("\nInvalid selection.\n"); break;
             	}
-        		
-        	} else {
-        		System.out.println("");
         	}
         	ArrayList<Double> grades = new ArrayList<Double>();
         	grades.add(PowerSchool.getMP1Grade(courseId, studentId));
@@ -864,24 +887,21 @@ public class Application {
 
     private void shutdown() {
     	in.nextLine();
+    	String wantTo = "";
         System.out.print("\nAre you sure? (y/n) ");
         String yesNo = in.nextLine();
-        
-        if(!yesNo.equals("y") && !yesNo.equals("n")) {
-    		System.out.println("\nInvalid selection.\n");
-    		while(!yesNo.equals("y") && !yesNo.equals("n")) {
-    			System.out.print("Are you sure? (y/n) ");
-    	    	yesNo = in.nextLine();
-    		}
-    	} else if (yesNo.equals("y")) {
+        yesNo = yesNo.toLowerCase();
+    	int checked = checkYesNo(yesNo, wantTo);
+    	
+    	if(checked == -1) {
+			System.out.println("");
+    	} else if (checked == 1) {
     		if (in != null) {
                 in.close();
             }
             
             System.out.println("\nGoodbye!");
             System.exit(0);
-    	} else if (yesNo.equals("n")) {
-    		System.out.println("");
     	}
     }
     
