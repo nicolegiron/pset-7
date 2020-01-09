@@ -862,9 +862,13 @@ public class Application {
     
     public void courseGrades() {
     	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
+    	System.out.println(courseIds);
     	ArrayList<String> courses = PowerSchool.getCourseName(activeUser, courseIds);
     	ArrayList<String> courseGrades = PowerSchool.getCourseGrade(PowerSchool.getStudentIdByUserId(activeUser), courseIds);
+    	System.out.println(courseIds);
+    	System.out.println(courseGrades);
     	System.out.println("");
+    	
     	for(int i = 0; i <= courseGrades.size()-1; i++) {
     		System.out.println((i + 1) + ". " + courses.get(i) + " / " + courseGrades.get(i));
     	}

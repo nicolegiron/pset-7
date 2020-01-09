@@ -333,7 +333,9 @@ public class PowerSchool {
     	ArrayList<String> courseGrades = new ArrayList<String>();
      	try (Connection conn = getConnection();
      			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_GRADE)) {
-     			for(int i = 0; i <= courseIds.size()-1; i++) {
+     			
+     			for(int i = 0; i < courseIds.size(); i++) {
+     				
      				stmt.setInt(1, courseIds.get(i));
      				stmt.setInt(2, studentId);
      				
