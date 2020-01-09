@@ -143,11 +143,19 @@ public class Utils {
         for (int i = 0; i < grades.size(); i++) {
             if (grades.get(i) != null) {
                 if (i < 2 || (i > 2 && i < 5)) {        // marking period grade
-                    mps++;
-                    mpSum = mpSum + grades.get(i);
+                    if(grades.get(i)==-1) {
+                    	
+                    } else {
+                    	mps++;
+                    	mpSum = mpSum + grades.get(i);
+                    }
                 } else {                                // midterm or final exam grade
-                    exams++;
-                    examSum = examSum + grades.get(i);
+                    if(grades.get(i)==-1) {
+                    	
+                    } else {
+                    	exams++;
+                    	examSum = examSum + grades.get(i);
+                    }
                 }
             }
         }
@@ -172,7 +180,7 @@ public class Utils {
             examWeight = 1.0;
         } else {
             return null;
-        }               
+        }
         return round(mpAvg * mpWeight + examAvg * examWeight, 2);
     }
     

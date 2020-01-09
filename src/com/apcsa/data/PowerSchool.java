@@ -826,7 +826,7 @@ public class PowerSchool {
                 conn.commit();
                 return 1;
             } else {
-            	System.out.println("\nUser " + username + " does not exsist.\n");
+            	System.out.println("\nUser " + username + " does not exist.\n");
                 conn.rollback();
                 return -1;
             }
@@ -1087,7 +1087,6 @@ public class PowerSchool {
                    return -1;
                }
            } catch (SQLException e) {
-        	   System.out.println("\nsql error\n");
                return -1;
            }
     }
@@ -1180,7 +1179,7 @@ public class PowerSchool {
            }
     }
     
-    public static double getMP1Grade(int courseId, int studentId) {
+    public static Object getMP1Grade(int courseId, int studentId) {
     	try (Connection conn = getConnection();
     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MP1_GRADE)) {
                   
@@ -1188,7 +1187,7 @@ public class PowerSchool {
     		stmt.setInt(2, studentId);
     		try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("mp1");
+                    return rs.getObject("mp1");
                 }
             }
         } catch (SQLException e) {
@@ -1198,7 +1197,7 @@ public class PowerSchool {
         return -1;
     }
     
-    public static double getMP2Grade(int courseId, int studentId) {
+    public static Object getMP2Grade(int courseId, int studentId) {
     	try (Connection conn = getConnection();
     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MP2_GRADE)) {
                   
@@ -1206,7 +1205,7 @@ public class PowerSchool {
     		stmt.setInt(2, studentId);
     		try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("mp2");
+                    return rs.getObject("mp2");
                 }
             }
         } catch (SQLException e) {
@@ -1216,7 +1215,7 @@ public class PowerSchool {
         return -1;
     }
     
-    public static double getMP3Grade(int courseId, int studentId) {
+    public static Object getMP3Grade(int courseId, int studentId) {
     	try (Connection conn = getConnection();
     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MP3_GRADE)) {
                   
@@ -1224,7 +1223,7 @@ public class PowerSchool {
     		stmt.setInt(2, studentId);
     		try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("mp3");
+                    return rs.getObject("mp3");
                 }
             }
         } catch (SQLException e) {
@@ -1234,7 +1233,7 @@ public class PowerSchool {
         return -1;
     }
     
-    public static double getMP4Grade(int courseId, int studentId) {
+    public static Object getMP4Grade(int courseId, int studentId) {
     	try (Connection conn = getConnection();
     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MP4_GRADE)) {
                   
@@ -1242,7 +1241,7 @@ public class PowerSchool {
     		stmt.setInt(2, studentId);
     		try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("mp4");
+                    return rs.getObject("mp4");
                 }
             }
         } catch (SQLException e) {
@@ -1252,7 +1251,7 @@ public class PowerSchool {
         return -1;
     }
     
-    public static double getMidtermGrade(int courseId, int studentId) {
+    public static Object getMidtermGrade(int courseId, int studentId) {
     	try (Connection conn = getConnection();
     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_MIDTERM_GRADE)) {
                   
@@ -1260,7 +1259,7 @@ public class PowerSchool {
     		stmt.setInt(2, studentId);
     		try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("midterm_exam");
+                    return rs.getObject("midterm_exam");
                 }
             }
         } catch (SQLException e) {
@@ -1270,7 +1269,7 @@ public class PowerSchool {
         return -1;
     }
     
-    public static double getFinalGrade(int courseId, int studentId) {
+    public static Object getFinalGrade(int courseId, int studentId) {
     	try (Connection conn = getConnection();
     			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_FINAL_GRADE)) {
                   
@@ -1278,7 +1277,7 @@ public class PowerSchool {
     		stmt.setInt(2, studentId);
     		try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("final_exam");
+                    return rs.getObject("final_exam");
                 }
             }
         } catch (SQLException e) {
