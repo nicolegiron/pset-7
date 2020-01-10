@@ -734,7 +734,7 @@ public class Application {
         	System.out.println("\nAssignment: " + title + " (" + PowerSchool.getPointValue(title) + " pts)");
         	System.out.println("Student: " + studentLastName + ", " + studentFirstName);
         	int assignmentId = PowerSchool.getAssignmentIdFromTitlePlus(title, courseId, markingPeriod);
-        	int studentId = studentSelection;
+        	int studentId = Integer.parseInt(studentIds.get(studentSelection-1));
         	if(rows == 0) {
         		System.out.println("Current Grade: --");
         	} else {
@@ -823,7 +823,48 @@ public class Application {
 
         	double grade = Utils.getGrade(grades);
         	PowerSchool.updateCourseGrade(courseId, studentId, grade);
+        	PowerSchool.getCourseGrades(studentId);
         	
+        	ArrayList<Object> courseGrades = PowerSchool.getCourseGrades(studentId);
+        	ArrayList<Double> fourScale = new ArrayList<Double>();
+        	for(int i = 0; i < courseGrades.size(); i++) {
+        		if((Double) courseGrades.get(i) == -1.0) {
+        			
+        		} else if ((Double) courseGrades.get(i) >= 93 && (Double) courseGrades.get(i) <= 100) {
+        			fourScale.add(4.0);
+        		} else if ((Double) courseGrades.get(i) >= 90 && (Double) courseGrades.get(i) <= 92) {
+        			fourScale.add(3.7);
+        		} else if ((Double) courseGrades.get(i) >= 87 && (Double) courseGrades.get(i) <= 89) {
+        			fourScale.add(3.3);
+        		} else if ((Double) courseGrades.get(i) >= 83 && (Double) courseGrades.get(i) <= 86) {
+        			fourScale.add(3.0);
+        		} else if ((Double) courseGrades.get(i) >= 80 && (Double) courseGrades.get(i) <= 82) {
+        			fourScale.add(2.7);
+        		} else if ((Double) courseGrades.get(i) >= 77 && (Double) courseGrades.get(i) <= 79) {
+        			fourScale.add(2.3);
+        		} else if ((Double) courseGrades.get(i) >= 73 && (Double) courseGrades.get(i) <= 76) {
+        			fourScale.add(2.0);
+        		} else if ((Double) courseGrades.get(i) >= 70 && (Double) courseGrades.get(i) <= 72) {
+        			fourScale.add(1.7);
+        		} else if ((Double) courseGrades.get(i) >= 67 && (Double) courseGrades.get(i) <= 69) {
+        			fourScale.add(1.3);
+        		} else if ((Double) courseGrades.get(i) >= 65 && (Double) courseGrades.get(i) <= 66) {
+        			fourScale.add(1.0);
+        		} else if ((Double) courseGrades.get(i) > 65) {
+        			fourScale.add(0.0);
+        		}
+        	}
+        	ArrayList<Integer> courseIds = PowerSchool.getCourseIds(studentId);
+        	ArrayList<Integer> creditHours = PowerSchool.getCreditHours(courseIds);
+        	int totalGradePoints = 0;
+        	int hours = 0;
+        	for(int i = 0; i < fourScale.size(); i++) {
+        		totalGradePoints += fourScale.get(i)*creditHours.get(i);
+        		hours += creditHours.get(i);
+        	}
+        	double gpa = (double) (totalGradePoints)/ (double) hours;
+        	double roundedGpa = Math.round(gpa * 100.0) / 100.0;
+        	PowerSchool.updateGPA(roundedGpa, studentId);
         	hasAssignment = false;
     	}
     }
@@ -861,12 +902,11 @@ public class Application {
     }
     
     public void courseGrades() {
+    	ArrayList<String> gradeOrder = PowerSchool.getGradeOrder();
+    	System.out.println(gradeOrder);
     	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
-    	System.out.println(courseIds);
     	ArrayList<String> courses = PowerSchool.getCourseName(activeUser, courseIds);
     	ArrayList<String> courseGrades = PowerSchool.getCourseGrade(PowerSchool.getStudentIdByUserId(activeUser), courseIds);
-    	System.out.println(courseIds);
-    	System.out.println(courseGrades);
     	System.out.println("");
     	
     	for(int i = 0; i <= courseGrades.size()-1; i++) {
@@ -921,7 +961,7 @@ public class Application {
         		} else {
         			currentGrade = String.valueOf(PowerSchool.previousGrade(courseId, assignmentId, studentId));
         		}
-    			System.out.println((i + 1) + ". " + titles.get(i) + " / " + currentGrade + "(out of " + PowerSchool.getPointValue(titles.get(i)) + " pts)");
+    			System.out.println((i + 1) + ". " + titles.get(i) + " / " + currentGrade + " (out of " + PowerSchool.getPointValue(titles.get(i)) + " pts)");
         	}
         	System.out.println("");
     	}

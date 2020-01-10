@@ -477,7 +477,6 @@ INSERT INTO course_grades (course_id, student_id) VALUES (24, 23);
 INSERT INTO course_grades (course_id, student_id) VALUES (24, 25);
 INSERT INTO course_grades (course_id, student_id) VALUES (24, 27);
 INSERT INTO course_grades (course_id, student_id) VALUES (24, 29);
-INSERT INTO course_grades (course_id, student_id) VALUES (25, 1);
 INSERT INTO course_grades (course_id, student_id) VALUES (25, 2);
 INSERT INTO course_grades (course_id, student_id) VALUES (25, 4);
 INSERT INTO course_grades (course_id, student_id) VALUES (25, 6);

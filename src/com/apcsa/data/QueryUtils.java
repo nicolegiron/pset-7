@@ -298,4 +298,24 @@ public class QueryUtils {
     		"SELECT student_id FROM students " +
     				"WHERE user_id = ?";
     		
+    public static final String GET_GRADE_AND_STUDENT_ID = 
+    		"SELECT student_id, grade FROM course_grades " +
+    				"ORDER BY grade DESC";
+    
+    public static final String GET_ALL_GRADES_FOR_STUDENT =
+    		"SELECT grade FROM course_grades " +
+    				"WHERE student_id = ?";
+    
+    public static final String GET_COURSE_ID_BY_STUDENT = 
+    		"SELECT course_id FROM course_grades " +
+    				"WHERE student_id = ?";
+    
+    public static final String GET_CREDIT_HOURS = 
+    		"SELECT credit_hours FROM courses " +
+    				"WHERE course_id = ?";
+    
+    public static final String UPDATE_GPA = 
+    		"UPDATE students " +
+    				"SET gpa = ?" +
+    				"WHERE student_id = ?";
 }
