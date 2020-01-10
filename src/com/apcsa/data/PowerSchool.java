@@ -1323,19 +1323,22 @@ public class PowerSchool {
      	return -1;
     }
     
-    public static ArrayList<String> getGradeOrder() {
+    public static ArrayList<String> getGradeOrder(int gradeLevel) {
     	ArrayList<String> gradeOrder = new ArrayList<String>();
      	try (Connection conn = getConnection();
      			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_GRADE_AND_STUDENT_ID)) {
      			
+     		stmt.setInt(1, gradeLevel);
      				try (ResultSet rs = stmt.executeQuery()) {
      					while (rs.next()) {
-                  		   String result = rs.getString("grade");
+                  		   String result = rs.getString("gpa");
                   		   if(result == null) {
-                  			 gradeOrder.add(rs.getString("student_id"));
+                  			 gradeOrder.add(rs.getString("first_name"));
+                  			gradeOrder.add(rs.getString("last_name"));
                   			 gradeOrder.add("--");
                   		   }else {
-                  			 gradeOrder.add(rs.getString("student_id"));
+                  			 gradeOrder.add(rs.getString("first_name"));
+                  			gradeOrder.add(rs.getString("last_name"));
                   			 gradeOrder.add(result);
                   		   }
      					}

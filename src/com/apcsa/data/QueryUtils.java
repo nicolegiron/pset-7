@@ -299,8 +299,9 @@ public class QueryUtils {
     				"WHERE user_id = ?";
     		
     public static final String GET_GRADE_AND_STUDENT_ID = 
-    		"SELECT student_id, grade FROM course_grades " +
-    				"ORDER BY grade DESC";
+    		"SELECT first_name, last_name, gpa FROM students " +
+    				"WHERE grade_level = ? " +
+    				"ORDER BY gpa DESC";
     
     public static final String GET_ALL_GRADES_FOR_STUDENT =
     		"SELECT grade FROM course_grades " +

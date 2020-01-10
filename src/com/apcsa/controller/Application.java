@@ -390,18 +390,19 @@ public class Application {
 	}
     	
     	ArrayList<String> students = PowerSchool.getStudentsByGrade(gradeLevel);
-    	
+    	ArrayList<String> studentClassRank = PowerSchool.getGradeOrder(gradeLevel);
     	if(students.isEmpty()) {
     		System.out.println("\nThere are no students in this grade.\n");
     	} else {
     		System.out.println("");
-        	for(int i = 0, x = 0; i < students.size(); i = i + 3) {
-        		String gpa = students.get(i+2);
+        	for(int i = 0, x = 0, y = 1; i < studentClassRank.size(); i = i + 3) {
+        		String gpa = studentClassRank.get(i+2);
         		if(gpa.equals("-1.0")) {
-        			gpa = "#0";
+        			y = 0;
         		}
-        		System.out.println((x+1) + ". " + students.get(i+1) + ", " + students.get(i) + " / " + gpa);
+        		System.out.println((x+1) + ". " + studentClassRank.get(i+1) + ", " + studentClassRank.get(i) + " / #" + y);
         		x += 1;
+        		y += 1;
         	}
         	System.out.println("");
     	}
@@ -421,8 +422,8 @@ public class Application {
     	String courseId = PowerSchool.getCourseIdFromCourseNo2(courseNo);
     	ArrayList<String> studentIds = PowerSchool.getStudentId(courseId);
     	ArrayList<String> students = new ArrayList<String>();
-    	for(int i = 0; i < studentIds.size()-1; i++) {
-    		students.addAll(PowerSchool.getStudentsByStudentId(studentIds.get(i+1)));
+    	for(int i = 0; i < studentIds.size(); i++) {
+    		students.addAll(PowerSchool.getStudentsByStudentId(studentIds.get(i)));
     	}
     	System.out.println(courseId);
 
@@ -953,7 +954,6 @@ public class Application {
     	if(titles.isEmpty()) {
     		System.out.println("\nThere are no assignments in this class and marking period.\n");
     	} else {
-    		int studentId = PowerSchool.getStudentIdByUserId(activeUser);
     		
     		System.out.println("");
     		String currentGrade = "";
