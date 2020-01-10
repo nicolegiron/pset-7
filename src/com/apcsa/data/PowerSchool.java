@@ -288,16 +288,15 @@ public class PowerSchool {
            return "root";
     }
     
-    public static ArrayList<Integer> getCourseId(User activeUser) {
+    public static ArrayList<Integer> getCourseId(int studentId) {
     	ArrayList<Integer> resultList = new ArrayList<Integer>();
     	try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_ID)) {
-    		stmt.setInt(1, activeUser.getUserId());
+    		stmt.setInt(1, studentId);
 
     		try (ResultSet rs = stmt.executeQuery()) {
         	   while (rs.next()) {
-        		   int result = rs.getInt("course_id");
-        		   resultList.add(result);
+        		   resultList.add(rs.getInt("course_id"));
         	   }
         	   return resultList;
         	   
@@ -335,13 +334,13 @@ public class PowerSchool {
      			PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_GRADE)) {
      			
      			for(int i = 0; i < courseIds.size(); i++) {
-     				
      				stmt.setInt(1, courseIds.get(i));
      				stmt.setInt(2, studentId);
      				
      				try (ResultSet rs = stmt.executeQuery()) {
      					while (rs.next()) {
                   		   String result = rs.getString("grade");
+
                   		   if(result == null) {
                   			 courseGrades.add("--");
                   		   }else {

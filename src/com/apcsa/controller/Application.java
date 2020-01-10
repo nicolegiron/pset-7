@@ -424,7 +424,9 @@ public class Application {
     	for(int i = 0; i < studentIds.size()-1; i++) {
     		students.addAll(PowerSchool.getStudentsByStudentId(studentIds.get(i+1)));
     	}
-    	
+    	System.out.println(courseId);
+
+    	System.out.println(students);
     	System.out.println("");
     	for(int i = 0, x = 0; i < students.size(); i = i + 3) {
     		String gpa = students.get(i+2);
@@ -903,8 +905,8 @@ public class Application {
     
     public void courseGrades() {
     	ArrayList<String> gradeOrder = PowerSchool.getGradeOrder();
-    	System.out.println(gradeOrder);
-    	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
+    	int studentId = PowerSchool.getStudentIdByUserId(activeUser);
+    	ArrayList<Integer> courseIds = PowerSchool.getCourseId(studentId);
     	ArrayList<String> courses = PowerSchool.getCourseName(activeUser, courseIds);
     	ArrayList<String> courseGrades = PowerSchool.getCourseGrade(PowerSchool.getStudentIdByUserId(activeUser), courseIds);
     	System.out.println("");
@@ -917,7 +919,8 @@ public class Application {
     
     public void assignment() {
     	System.out.println("\nChoose a course.\n");
-    	ArrayList<Integer> courseIds = PowerSchool.getCourseId(activeUser);
+    	int studentId = PowerSchool.getStudentIdByUserId(activeUser);
+    	ArrayList<Integer> courseIds = PowerSchool.getCourseId(studentId);
     	ArrayList<String> courses = PowerSchool.getCourseNumber(activeUser, courseIds);
     	for(int i = 0; i <= courses.size()-1; i++) {
     		System.out.println("[" + (i + 1) + "] " + courses.get(i));
