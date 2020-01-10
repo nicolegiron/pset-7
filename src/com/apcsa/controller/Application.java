@@ -905,7 +905,6 @@ public class Application {
     }
     
     public void courseGrades() {
-    	ArrayList<String> gradeOrder = PowerSchool.getGradeOrder();
     	int studentId = PowerSchool.getStudentIdByUserId(activeUser);
     	ArrayList<Integer> courseIds = PowerSchool.getCourseId(studentId);
     	ArrayList<String> courses = PowerSchool.getCourseName(activeUser, courseIds);
